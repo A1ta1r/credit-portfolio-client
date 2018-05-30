@@ -5,7 +5,7 @@
     <ul>
       <li>
         <a
-          href="#/calculator"
+          href="/calculator"
           target="_self"
         >
           Кредитный Калькулятор
