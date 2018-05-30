@@ -5,10 +5,10 @@
     <ul>
       <li>
         <a
-          href="https://vuejs.org"
-          target="_blank"
+          href="#/calculator"
+          target="_self"
         >
-          Core Docs
+          Кредитный Калькулятор
         </a>
       </li>
       <li>
@@ -88,7 +88,7 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Добро пожаловать в ваш кредитный портфелий))'
     }
   }
 }
