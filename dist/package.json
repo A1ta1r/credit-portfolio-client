@@ -1,0 +1,10 @@
+{
+  "name": "credit-portfolio-client",
+  "version": "1.0.0",
+  "description": "Credit Portfolio front app",
+  "author": "Mikhail Sergeev <ima1ta1r@yandex.ru>",
+  "private": true,
+  "scripts": {
+    "postinstall": "npm install express"
+  }
+}
