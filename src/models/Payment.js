@@ -1,8 +1,16 @@
-export default
+import {Model} from 'vue-mc'
 
-class Payment {
-  constructor (paymentDate, paymentAmount) {
-    this.paymentDate = paymentDate
-    this.paymentAmount = paymentAmount
+export class Payment extends Model {
+  defaults () {
+    return {
+      paymentDate: null,
+      paymentAmount: null
+    }
+  }
+  routes () {
+    return {
+      fetch: '/payment/{id}',
+      save: '/payment'
+    }
   }
 }
