@@ -1,1 +1,1 @@
-web: ./deploy.sh
+web: cd dist && npm start
