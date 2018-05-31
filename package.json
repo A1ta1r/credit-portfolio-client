@@ -14,8 +14,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "stylus": "^0.54.5",
-    "v2-datepicker": "^3.0.6",
+    "bootstrap-css": "^4.0.0-alpha.5",
     "vue": "^2.5.2",
     "vue-mc": "^0.2.4",
     "vue-router": "^3.0.1",

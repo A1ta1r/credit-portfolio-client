@@ -1,1 +1,3 @@
-git subtree push --prefix dist heroku master
+cd distg
+npm start
+
