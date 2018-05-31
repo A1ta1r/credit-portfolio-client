@@ -7,4 +7,5 @@ class PaymentPlan {
   Currency
   NumberOfMonths
   PaymentList
+  StartDate
 }
