@@ -1,1 +1,1 @@
-web: cd dist && npm start
+web: cd dist && npm install express && npm start
