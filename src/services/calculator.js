@@ -9,7 +9,7 @@ export default class Calculator {
     plan.InterestRate = 12.56
     plan.NumberOfMonths = 7
     plan.PaymentList = {}
-    plan.StartDate = Date.now()
+    plan.StartDate = new Date(Date.now())
     return plan
   }
 
@@ -23,10 +23,12 @@ export default class Calculator {
 
     var sum = paymentPlan.PaymentAmount * koef
 
+    paymentPlan.PaymentList = []
+
     for (let i = 0; i < paymentPlan.NumberOfMonths; i++) {
       var currentMonth = date.setMonth(date.getMonth() + i)
       paymentPlan.PaymentList[i] = {
-        month: currentMonth,
+        month: new Date(currentMonth),
         amount: sum
       }
     }
@@ -38,12 +40,13 @@ export default class Calculator {
     var date = paymentPlan.StartDate
 
     var baseFee = paymentPlan.PaymentAmount / paymentPlan.NumberOfMonths
+    paymentPlan.PaymentList = []
 
     for (let i = 0; i < paymentPlan.NumberOfMonths; i++) {
-      var currentMonth = date.setMonth(date.getMonth() + i)
+      var currentMonth = date.setMonth(date.getMonth() + 1)
       var sum = baseFee + (paymentPlan.PaymentAmount - baseFee * i) * paymentPlan.InterestRate / paymentPlan.NumberOfMonths
       paymentPlan.PaymentList[i] = {
-        month: currentMonth,
+        month: new Date(currentMonth),
         amount: sum
       }
     }
