@@ -8,5 +8,5 @@
 import Calculator from '../services/calculator'
 
 let a = new Calculator();
-Calculator.Calculate()
+Calculator.calculate()
 </script>

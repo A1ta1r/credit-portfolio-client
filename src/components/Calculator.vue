@@ -4,7 +4,7 @@
     <label for="month">Количество месяцев</label><input type="number" id="month" v-model="months"
                                                         title="Количество месяцев"/><br>
     <label for="rate">Процент</label><input type="number" step="0.01" min="0" id="rate" v-model="rate" title="Процент"/><br>
-    <label>Дата начала платежей</label><datepicker v-model="startDate"></datepicker><br>
+    <label for="datepicker">Дата начала платежей</label><datepicker id="datepicker" v-model="startDate"></datepicker><br>
     <label for="type">Тип выплат</label><select v-model="paymentType" id="type">
     <option>{{ diff }}</option>
     <option>{{ even }}</option>
@@ -50,12 +50,12 @@ export default {
     calculation: function () {
       let plan = new PaymentPlan()
       plan.PaymentAmount = this.sum
-      plan.InterestRate = this.rate
+      plan.InterestRate = this.rate / 100
       plan.NumberOfMonths = this.months
       plan.StartDate = this.startDate
       plan.PaymentType = this.paymentType
 
-      plan = Calculator.calculateEqual(plan)
+      plan = Calculator.calculate(plan)
       this.calendar = plan.PaymentList
       console.log(plan)
     }
