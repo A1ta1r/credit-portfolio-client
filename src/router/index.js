@@ -17,5 +17,20 @@ export default new Router({
       name: 'Calculator',
       component: Calculator
     }
+    // {
+    //   path: '/user/:id',
+    //   name: 'User',
+    //   component: UserPage
+    // },
+    // {
+    //   path: '/advertiser/:id',
+    //   name: 'Advertiser',
+    //   component: AdvertiserPage
+    // },
+    // {
+    //   path: '/advertiser/:id/ads',
+    //   name: 'Ads',
+    //   component: AdsPage
+    // }
   ]
 })

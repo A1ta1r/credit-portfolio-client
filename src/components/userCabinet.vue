@@ -5,8 +5,4 @@
 </template>
 
 <script>
-import Calculator from '../services/calculator'
-
-let a = new Calculator();
-Calculator.calculate()
 </script>

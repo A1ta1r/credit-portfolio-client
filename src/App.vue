@@ -1,20 +1,23 @@
 <template>
   <div id="app">
-    <h1>Hello App!</h1>
-    <p>
-      <!-- use router-link component for navigation. -->
-      <!-- specify the link by passing the `to` prop. -->
-      <!-- `<router-link>` will be rendered as an `<a>` tag by default -->
-      <router-link to="/foo">Go to Foo</router-link>
-      <router-link to="/bar">Go to Bar</router-link>
-    </p>
-    <router-view/>
+    <header-com></header-com>
+    <router-view></router-view>
+    <footer-com></footer-com>
   </div>
 </template>
 
 <script>
+import HeaderCom from './components/Header'
+import FooterCom from './components/Footer'
+import SidebarCom from './components/Sidebar'
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    HeaderCom,
+    FooterCom,
+    SidebarCom
+  }
+
 }
 </script>
 
@@ -25,6 +28,5 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-    margin-top: 60px;
   }
 </style>

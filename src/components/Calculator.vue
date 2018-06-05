@@ -1,5 +1,5 @@
 <template>
-  <div class="calculator">
+  <div id="calculator">
     <div class="form-group form-inline">
       <label class="">Сумма кредита</label>
       <input class="form-control" type="number" id="sum" min="0" v-model="sum" title="Сумма кредита"/>
@@ -39,7 +39,7 @@
       <table class="table table-bordered">
         <tr v-bind:key="item.paymentDate" v-for="item in calendar" class="form-control-static">
           <td>{{ (new Date(item.paymentDate)).toLocaleDateString("ru", options) }}</td>
-          <td>{{ item.paymentAmount.toFixed(2) }}</td>
+          <td>{{ item.paymentAmount.toFixed(2) }} RUB</td>
         </tr>
       </table>
     </div>
