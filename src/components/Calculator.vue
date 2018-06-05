@@ -1,52 +1,48 @@
 <template>
   <div id="calculator">
-    <div class="form-group form-inline">
-      <label class="">Сумма кредита</label>
+
+    <div class="form-group">
+      <label>Сумма кредита</label>
       <input class="form-control" type="number" id="sum" min="0" v-model="sum" title="Сумма кредита"/>
     </div>
-    <div class="form-group  form-inline">
+
+    <div class="form-group">
       <label>Количество месяцев</label>
       <input class="form-control" type="number" id="month" v-model="months" title="Количество месяцев"/>
     </div>
-    <div class="form-group form-inline">
+
+    <div class="form-group">
       <label>Процент</label>
       <input class="form-control" type="number" step="0.01" min="0" id="rate" v-model="rate" title="Процент"/>
     </div>
-    <div class="form-group form-inline">
+
+    <div class="form-group">
       <label>Дата начала платежей</label>
       <datepicker :input-class="datepickerInput" :language="datepickerLocale" v-model="startDate"></datepicker>
     </div>
-    <div class="form-group form-inline">
-      <label>Тип выплат</label>
-      <div class="radio">
-        <label class="radio-inline" for="evenradio">
-          <input id="evenradio" type="radio" :value="even" v-model="paymentType">
-          {{even}}
-        </label>
-      </div>
-      <div class="radio">
-        <label class="radio-inline" for="diffradio">
-          <input id="diffradio" type="radio" :value="diff" v-model="paymentType">
-          {{diff}}
-        </label>
-      </div>
+
+    <div class="form-group">
+      <label class="d-block">Тип выплат</label>
+      <label class="radio-inline" for="evenradio">
+        <input id="evenradio" type="radio" :value="even" v-model="paymentType">
+        {{even}}
+      </label>
+      <label class="radio-inline" for="diffradio">
+        <input id="diffradio" type="radio" :value="diff" v-model="paymentType">
+        {{diff}}
+      </label>
     </div>
+
     <div class="form-control-static">
       <input type="submit" class="btn btn-primary" title="Рассчитать" value="Рассчитать" v-on:click="calculation"/>
     </div>
-    <div class="form-group" v-if="total">
-      <h6 class="form-control-static">Итоговая сумма платежей: {{paymentPlan.TotalPaymentAmount.toFixed(2)}}</h6>
-      <table class="table table-bordered">
-        <tr v-bind:key="item.paymentDate" v-for="item in calendar" class="form-control-static">
-          <td>{{ (new Date(item.paymentDate)).toLocaleDateString("ru", options) }}</td>
-          <td>{{ item.paymentAmount.toFixed(2) }} RUB</td>
-        </tr>
-      </table>
-    </div>
+    <h5 v-if="total" class="form-control-static">Итоговая сумма платежей: {{total.toFixed(2)}}</h5>
+    <PaymentsTable v-if="total" v-bind:payments="payments" v-bind:total="total"></PaymentsTable>
   </div>
 </template>
 
 <script>
+import PaymentsTable from '../components/PaymentsTable'
 import PaymentPlan from '../models/paymentPlan'
 import Calculator from '../services/calculator'
 import Datepicker from 'vuejs-datepicker'
@@ -54,7 +50,7 @@ import {ru} from 'vuejs-datepicker/dist/locale'
 
 export default {
   name: 'calculator',
-  components: {Datepicker},
+  components: {Datepicker, PaymentsTable},
   data () {
     return {
       paymentType: PaymentPlan.LoanTypes.Even,
@@ -65,13 +61,8 @@ export default {
       sum: 1000000,
       months: 12,
       rate: 12.4,
-      total: false,
-      calendar: [],
-      options: {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      },
+      total: 0,
+      payments: [],
       datepickerLocale: ru,
       datepickerInput: 'form-control'
     }
@@ -85,7 +76,7 @@ export default {
       this.paymentPlan.PaymentType = this.paymentType
 
       this.paymentPlan = Calculator.calculate(this.paymentPlan)
-      this.calendar = this.paymentPlan.PaymentList
+      this.payments = this.paymentPlan.PaymentList
       this.startDate = new Date()
       this.total = this.paymentPlan.TotalPaymentAmount
     }
@@ -94,7 +85,15 @@ export default {
 </script>
 
 <style scoped>
+  .form-group {
+    margin: 0 12rem;
+  }
+
   label {
-    margin: 4pt;
+    margin: 1.5rem 0 0 0;
+  }
+
+  th {
+    text-align: center;
   }
 </style>

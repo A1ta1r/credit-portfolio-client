@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  name: 'FooterCom.vue'
+  name: 'FooterCom'
 }
 </script>
 

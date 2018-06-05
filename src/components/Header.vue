@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'HeaderCom.vue'
+  name: 'HeaderCom'
 }
 </script>
 
