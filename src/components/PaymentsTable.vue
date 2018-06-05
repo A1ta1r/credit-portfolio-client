@@ -3,8 +3,9 @@
     <table class="table table-bordered table-striped">
       <thead>
       <tr>
-        <th>Дата платежа</th>
-        <th>Сумма платежа</th>
+        <th v-bind:key="item" v-for="item in columnHeads">
+          {{item}}
+        </th>
       </tr>
       </thead>
       <tr v-bind:key="item.paymentDate" v-for="item in payments" class="form-control-static">
@@ -25,9 +26,7 @@ export default {
         month: 'long',
         day: 'numeric'
       },
-      limit: 12,
-      offset: 0,
-      remaining: Number
+      columnHeads: ['Дата платежа', 'Сумма платежа']
     }
   },
   props: {
@@ -37,4 +36,7 @@ export default {
 </script>
 
 <style scoped>
+  th {
+    text-align: center;
+  }
 </style>

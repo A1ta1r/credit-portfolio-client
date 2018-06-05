@@ -37,12 +37,14 @@
       <input type="submit" class="btn btn-primary" title="Рассчитать" value="Рассчитать" v-on:click="calculation"/>
     </div>
     <h5 v-if="total" class="form-control-static">Итоговая сумма платежей: {{total.toFixed(2)}}</h5>
-    <PaymentsTable v-if="total" v-bind:payments="payments" v-bind:total="total"></PaymentsTable>
+    <PaymentsTable v-if="total" :payments="currentPayments" :total="total"></PaymentsTable>
+    <paginator v-if="total" v-model="currentPage" :limit="limit" :length="payments.length"></paginator>
   </div>
 </template>
 
 <script>
 import PaymentsTable from '../components/PaymentsTable'
+import Paginator from '../components/Paginator'
 import PaymentPlan from '../models/paymentPlan'
 import Calculator from '../services/calculator'
 import Datepicker from 'vuejs-datepicker'
@@ -50,7 +52,7 @@ import {ru} from 'vuejs-datepicker/dist/locale'
 
 export default {
   name: 'calculator',
-  components: {Datepicker, PaymentsTable},
+  components: {Datepicker, PaymentsTable, Paginator},
   data () {
     return {
       paymentType: PaymentPlan.LoanTypes.Even,
@@ -59,12 +61,14 @@ export default {
       paymentPlan: new PaymentPlan(),
       startDate: new Date(),
       sum: 1000000,
-      months: 12,
+      months: 67,
       rate: 12.4,
       total: 0,
       payments: [],
       datepickerLocale: ru,
-      datepickerInput: 'form-control'
+      datepickerInput: 'form-control',
+      currentPage: 1,
+      limit: 12
     }
   },
   methods: {
@@ -79,6 +83,14 @@ export default {
       this.payments = this.paymentPlan.PaymentList
       this.startDate = new Date()
       this.total = this.paymentPlan.TotalPaymentAmount
+      this.currentPage = 1
+    }
+  },
+  computed: {
+    currentPayments: function () {
+      let start = (this.currentPage - 1) * this.limit
+      let end = start + this.limit
+      return this.payments.slice(start, end)
     }
   }
 }
