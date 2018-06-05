@@ -3,7 +3,7 @@ import {Payment} from '../models/Payment'
 
 export default class Calculator {
   static calculate (plan) {
-    if (plan.PaymentType === PaymentPlan.LoanTypes.Even) {
+    if (plan.paymentType === PaymentPlan.LoanTypes.Even) {
       return this.calculateEqual(plan)
     } else {
       return this.calculateDifferentiated(plan)
@@ -11,40 +11,39 @@ export default class Calculator {
   }
 
   static calculateEqual (paymentPlan) {
-    let date = paymentPlan.StartDate
+    let date = paymentPlan.startDate
 
-    let month = paymentPlan.NumberOfMonths
-    let percent = paymentPlan.InterestRate / 12
+    let month = paymentPlan.numberOfMonths
+    let percent = paymentPlan.interestRate / 12 / 100
 
     let koef = (percent * Math.pow(1 + percent, month)) / (Math.pow(1 + percent, month) - 1)
 
-    let sum = paymentPlan.PaymentAmount * koef
+    let sum = paymentPlan.paymentAmount * koef
 
-    paymentPlan.TotalPaymentAmount = sum * paymentPlan.NumberOfMonths
-    paymentPlan.PaymentList = []
+    paymentPlan.totalPaymentAmount = sum * paymentPlan.numberOfMonths
+    paymentPlan.paymentList = []
 
-    for (let i = 0; i < paymentPlan.NumberOfMonths; i++) {
+    for (let i = 0; i < paymentPlan.numberOfMonths; i++) {
       let currentMonth = date.setMonth(date.getMonth() + 1)
-      paymentPlan.PaymentList[i] = new Payment({paymentDate: currentMonth, paymentAmount: sum})
+      paymentPlan.paymentList[i] = new Payment({paymentDate: currentMonth, paymentAmount: sum})
     }
     return paymentPlan
   }
 
   static calculateDifferentiated (paymentPlan) {
-    let date = paymentPlan.StartDate
+    let date = paymentPlan.startDate
 
-    let baseFee = paymentPlan.PaymentAmount / paymentPlan.NumberOfMonths
+    let baseFee = paymentPlan.paymentAmount / paymentPlan.numberOfMonths
 
-    paymentPlan.TotalPaymentAmount = 0
-    paymentPlan.PaymentList = []
+    paymentPlan.totalPaymentAmount = 0
+    paymentPlan.paymentList = []
 
-    for (let i = 0; i < paymentPlan.NumberOfMonths; i++) {
+    for (let i = 0; i < paymentPlan.numberOfMonths; i++) {
       let currentMonth = date.setMonth(date.getMonth() + 1)
-      let sum = baseFee + (paymentPlan.PaymentAmount - baseFee * i) * paymentPlan.InterestRate / paymentPlan.NumberOfMonths
-      paymentPlan.PaymentList[i] = new Payment({paymentDate: currentMonth, paymentAmount: sum})
-      paymentPlan.TotalPaymentAmount += sum
+      let sum = baseFee + (paymentPlan.paymentAmount - baseFee * i) * paymentPlan.interestRate / 100 / 12
+      paymentPlan.paymentList[i] = new Payment({paymentDate: currentMonth, paymentAmount: sum})
+      paymentPlan.totalPaymentAmount += sum
     }
-
     return paymentPlan
   }
 }

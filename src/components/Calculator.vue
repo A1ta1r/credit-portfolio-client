@@ -3,17 +3,20 @@
 
     <div class="form-group">
       <label>Сумма кредита</label>
-      <input class="form-control" type="number" id="sum" min="0" v-model="sum" title="Сумма кредита"/>
+      <input class="form-control" type="number" id="sum" min="0" v-model="paymentPlan.paymentAmount"
+             title="Сумма кредита"/>
     </div>
 
     <div class="form-group">
       <label>Количество месяцев</label>
-      <input class="form-control" type="number" id="month" v-model="months" title="Количество месяцев"/>
+      <input class="form-control" type="number" id="month" v-model="paymentPlan.numberOfMonths"
+             title="Количество месяцев"/>
     </div>
 
     <div class="form-group">
-      <label>Процент</label>
-      <input class="form-control" type="number" step="0.01" min="0" id="rate" v-model="rate" title="Процент"/>
+      <label>Процент в год</label>
+      <input class="form-control" type="number" step="0.01" min="0" id="rate" v-model="paymentPlan.interestRate"
+             title="Процент"/>
     </div>
 
     <div class="form-group">
@@ -24,11 +27,11 @@
     <div class="form-group">
       <label class="d-block">Тип выплат</label>
       <label class="radio-inline" for="evenradio">
-        <input id="evenradio" type="radio" :value="even" v-model="paymentType">
+        <input id="evenradio" type="radio" :value="even" v-model="paymentPlan.paymentType">
         {{even}}
       </label>
       <label class="radio-inline" for="diffradio">
-        <input id="diffradio" type="radio" :value="diff" v-model="paymentType">
+        <input id="diffradio" type="radio" :value="diff" v-model="paymentPlan.paymentType">
         {{diff}}
       </label>
     </div>
@@ -36,9 +39,12 @@
     <div class="form-control-static">
       <input type="submit" class="btn btn-primary" title="Рассчитать" value="Рассчитать" v-on:click="calculation"/>
     </div>
-    <h5 v-if="total" class="form-control-static">Итоговая сумма платежей: {{total.toFixed(2)}}</h5>
-    <PaymentsTable v-if="total" :payments="currentPayments" :total="total"></PaymentsTable>
-    <paginator v-if="total" v-model="currentPage" :limit="limit" :length="payments.length"></paginator>
+    <h5 v-if="paymentPlan.totalPaymentAmount" class="form-control-static">Итоговая сумма платежей:
+      {{paymentPlan.totalPaymentAmount.toFixed(2)}}</h5>
+    <PaymentsTable v-if="paymentPlan.totalPaymentAmount" :payments="currentPayments"
+                   :total="paymentPlan.totalPaymentAmount"></PaymentsTable>
+    <paginator v-if="paymentPlan.totalPaymentAmount" v-model="currentPage" :limit="limit"
+               :length="paymentPlan.paymentList.length"></paginator>
   </div>
 </template>
 
@@ -55,16 +61,10 @@ export default {
   components: {Datepicker, PaymentsTable, Paginator},
   data () {
     return {
-      paymentType: PaymentPlan.LoanTypes.Even,
       even: PaymentPlan.LoanTypes.Even,
       diff: PaymentPlan.LoanTypes.Differentiated,
       paymentPlan: new PaymentPlan(),
-      startDate: new Date(),
-      sum: 1000000,
-      months: 67,
-      rate: 12.4,
-      total: 0,
-      payments: [],
+      startDate: Date.now(),
       datepickerLocale: ru,
       datepickerInput: 'form-control',
       currentPage: 1,
@@ -73,24 +73,17 @@ export default {
   },
   methods: {
     calculation: function () {
-      this.paymentPlan.PaymentAmount = this.sum
-      this.paymentPlan.InterestRate = this.rate / 100
-      this.paymentPlan.NumberOfMonths = this.months
-      this.paymentPlan.StartDate = this.startDate
-      this.paymentPlan.PaymentType = this.paymentType
-
+      this.paymentPlan.startDate = new Date(this.startDate)
       this.paymentPlan = Calculator.calculate(this.paymentPlan)
-      this.payments = this.paymentPlan.PaymentList
-      this.startDate = new Date()
-      this.total = this.paymentPlan.TotalPaymentAmount
       this.currentPage = 1
+      this.startDate = Date.now()
     }
   },
   computed: {
     currentPayments: function () {
       let start = (this.currentPage - 1) * this.limit
       let end = start + this.limit
-      return this.payments.slice(start, end)
+      return this.paymentPlan.paymentList.slice(start, end)
     }
   }
 }
