@@ -1,30 +1,30 @@
 <template>
   <div id="calculator">
 
-    <div class="form-group">
+    <div class="form-group col-md-6">
       <label>Сумма кредита</label>
       <input class="form-control" type="number" id="sum" min="1" v-model="paymentPlan.paymentAmount"
              title="Сумма кредита"/>
     </div>
 
-    <div class="form-group">
+    <div class="form-group col-md-6">
       <label>Количество месяцев</label>
       <input class="form-control" type="number" id="month" min="1" v-model="paymentPlan.numberOfMonths"
              title="Количество месяцев"/>
     </div>
 
-    <div class="form-group">
+    <div class="form-group col-md-6">
       <label>Процент в год</label>
       <input class="form-control" type="number" step="0.01" min="0" id="rate" v-model="paymentPlan.interestRate"
              title="Процент"/>
     </div>
 
-    <div class="form-group">
+    <div class="form-group col-md-6">
       <label>Дата начала платежей</label>
       <datepicker :input-class="datepickerInput" :language="datepickerLocale" v-model="startDate"></datepicker>
     </div>
 
-    <div class="form-group">
+    <div class="form-group col-md-6">
       <label class="d-block">Тип выплат</label>
       <label class="radio-inline" for="evenradio">
         <input id="evenradio" type="radio" :value="even" v-model="paymentPlan.paymentType">
@@ -36,7 +36,7 @@
       </label>
     </div>
 
-    <div class="form-control-static">
+    <div class="form-control-static col-md-6">
       <input type="submit" class="btn btn-primary" title="Рассчитать" value="Рассчитать" v-on:click="calculation"/>
     </div>
     <h5 v-if="paymentPlan.totalPaymentAmount" class="form-control-static">Итоговая сумма платежей:
