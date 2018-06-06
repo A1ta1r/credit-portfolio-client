@@ -1,8 +1,8 @@
 <template>
   <div class="form-group">
-    <button class="btn" @click="prevPage" :value="value">Назад</button>
+    <button class="btn btn-outline-primary" @click="prevPage" :value="value">Назад</button>
     <label>{{currentPage}} из {{pages}}</label>
-    <button class="btn" @click="nextPage" :value="value">Вперед</button>
+    <button class="btn btn-outline-primary" @click="nextPage" :value="value">Вперед</button>
   </div>
 </template>
 

@@ -3,13 +3,13 @@
 
     <div class="form-group">
       <label>Сумма кредита</label>
-      <input class="form-control" type="number" id="sum" min="0" v-model="paymentPlan.paymentAmount"
+      <input class="form-control" type="number" id="sum" min="1" v-model="paymentPlan.paymentAmount"
              title="Сумма кредита"/>
     </div>
 
     <div class="form-group">
       <label>Количество месяцев</label>
-      <input class="form-control" type="number" id="month" v-model="paymentPlan.numberOfMonths"
+      <input class="form-control" type="number" id="month" min="1" v-model="paymentPlan.numberOfMonths"
              title="Количество месяцев"/>
     </div>
 
@@ -90,7 +90,7 @@ export default {
 </script>
 
 <style scoped>
-  .form-group {
+  #calculator {
     margin: 0 16px;
   }
 

@@ -9,9 +9,9 @@
 </template>
 
 <script>
-    export default {
-        name: "Navbar.vue"
-    }
+export default {
+  name: 'Navbar.vue'
+}
 </script>
 
 <style scoped>
