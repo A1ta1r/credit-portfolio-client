@@ -91,11 +91,11 @@ export default {
 
 <style scoped>
   .form-group {
-    margin: 0 12rem;
+    margin: 0 16pt;
   }
 
   label {
-    margin: 1.5rem 0 0 0;
+    margin: 16pt 0 0 0;
   }
 
   th {
