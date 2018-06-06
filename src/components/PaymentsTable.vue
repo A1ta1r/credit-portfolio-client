@@ -1,6 +1,6 @@
 <template>
   <div id="payemnts-table" class="form-group">
-    <table class="table table-bordered table-striped">
+    <table class="table table-bordered">
       <thead>
       <tr>
         <th v-bind:key="item" v-for="item in columnHeads">
@@ -38,5 +38,9 @@ export default {
 <style scoped>
   th {
     text-align: center;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
   }
 </style>

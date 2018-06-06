@@ -1,6 +1,6 @@
 <template>
   <header id="header-com">
-    <h1>Веб-приложение "Кредитный портфель"</h1>
+    <router-link to="/" class="text-gray-dark nav-link" id="head"><h1>Веб-приложение "Кредитный портфель"</h1></router-link>
   </header>
 </template>
 

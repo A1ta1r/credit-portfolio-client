@@ -1,42 +1,42 @@
 <template>
-  <div id="calculator">
+  <div id="calculator" class="flex-container">
 
-    <div class="form-group col-md-6">
+    <div class="form-group">
       <label>Сумма кредита</label>
       <input class="form-control" type="number" id="sum" min="1" v-model="paymentPlan.paymentAmount"
              title="Сумма кредита"/>
     </div>
 
-    <div class="form-group col-md-6">
+    <div class="form-group">
       <label>Количество месяцев</label>
       <input class="form-control" type="number" id="month" min="1" v-model="paymentPlan.numberOfMonths"
              title="Количество месяцев"/>
     </div>
 
-    <div class="form-group col-md-6">
+    <div class="form-group">
       <label>Процент в год</label>
       <input class="form-control" type="number" step="0.01" min="0" id="rate" v-model="paymentPlan.interestRate"
              title="Процент"/>
     </div>
 
-    <div class="form-group col-md-6">
+    <div class="form-group">
       <label>Дата начала платежей</label>
       <datepicker :input-class="datepickerInput" :language="datepickerLocale" v-model="startDate"></datepicker>
     </div>
 
-    <div class="form-group col-md-6">
+    <div class="form-group">
       <label class="d-block">Тип выплат</label>
-      <label class="radio-inline" for="evenradio">
+      <label class="radio-inline" for="evenradio" data-toggle="tooltip" title="Равные выплаты">
         <input id="evenradio" type="radio" :value="even" v-model="paymentPlan.paymentType">
         {{even}}
       </label>
-      <label class="radio-inline" for="diffradio">
+      <label class="radio-inline" for="diffradio" data-toggle="tooltip" title="Уменьшающиеся выплаты">
         <input id="diffradio" type="radio" :value="diff" v-model="paymentPlan.paymentType">
         {{diff}}
       </label>
     </div>
 
-    <div class="form-control-static col-md-6">
+    <div class="form-control-static">
       <input type="submit" class="btn btn-primary" title="Рассчитать" value="Рассчитать" v-on:click="calculation"/>
     </div>
     <h5 v-if="paymentPlan.totalPaymentAmount" class="form-control-static">Итоговая сумма платежей:
@@ -100,5 +100,13 @@ export default {
 
   th {
     text-align: center;
+  }
+
+  .flex-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
   }
 </style>
