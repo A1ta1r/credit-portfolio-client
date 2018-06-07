@@ -1,10 +1,11 @@
 import {Collection} from 'vue-mc'
-import {Payment} from '../models/Payment';
+import {Payment} from '../models/Payment'
 
-export class Payments extends Collection {
+export class PaymentList extends Collection {
   model () {
     return Payment
   }
+
   routes () {
     return {
       fetch: '/payments'

@@ -1,8 +1,8 @@
 <template>
   <div class="form-group">
-    <button class="btn btn-outline-primary" @click="prevPage" :value="value">Назад</button>
+    <button class="btn btn-outline-primary" @click="prevPage" :value="value.page">Назад</button>
     <label>{{currentPage}} из {{pages}}</label>
-    <button class="btn btn-outline-primary" @click="nextPage" :value="value">Вперед</button>
+    <button class="btn btn-outline-primary" @click="nextPage" :value="value.page">Вперед</button>
   </div>
 </template>
 
@@ -16,7 +16,7 @@ export default {
   },
   props: {
     limit: Number,
-    value: Number,
+    value: Object,
     length: Number
   },
   computed: {
@@ -24,31 +24,26 @@ export default {
       return Math.ceil(this.length / this.limit)
     },
     currentPage: function () {
-      return this.offset / this.limit + 1
+      return this.value.offset / this.limit + 1
     }
   },
   methods: {
     nextPage: function () {
-      let newOffset = this.offset + this.limit
+      let newOffset = this.value.offset + this.limit
       if (newOffset < this.length) {
-        this.offset = newOffset
+        this.value.offset = newOffset
       }
       this.emitChange()
     },
     prevPage: function () {
-      let newOffset = this.offset - this.limit
+      let newOffset = this.value.offset - this.limit
       if (newOffset >= 0) {
-        this.offset = newOffset
+        this.value.offset = newOffset
       }
       this.emitChange()
     },
     emitChange: function () {
-      this.$emit('input', this.currentPage)
-    }
-  },
-  updated () {
-    if (this.offset > this.length) {
-      this.offset = 0
+      this.$emit('input', {page: this.currentPage, limit: 12, offset: this.value.offset})
     }
   }
 }

@@ -43,7 +43,7 @@
       {{paymentPlan.totalPaymentAmount.toFixed(2)}}</h5>
     <PaymentsTable v-if="paymentPlan.totalPaymentAmount" :payments="currentPayments"
                    :total="paymentPlan.totalPaymentAmount"></PaymentsTable>
-    <paginator v-if="paymentPlan.totalPaymentAmount" v-model="currentPage" :limit="limit"
+    <paginator v-if="paymentPlan.totalPaymentAmount" v-model="pagination" :limit="pagination.limit"
                :length="paymentPlan.paymentList.length"></paginator>
   </div>
 </template>
@@ -63,26 +63,33 @@ export default {
     return {
       even: PaymentPlan.LoanTypes.Even,
       diff: PaymentPlan.LoanTypes.Differentiated,
-      paymentPlan: new PaymentPlan(),
+      paymentPlan: new PaymentPlan({paymentAmount: 1000000, interestRate: 12.4, numberOfMonths: 24}),
       startDate: Date.now(),
       datepickerLocale: ru,
       datepickerInput: 'form-control',
-      currentPage: 1,
-      limit: 12
+      pagination: {
+        page: 1,
+        limit: 12,
+        offset: 0
+      }
     }
   },
   methods: {
     calculation: function () {
       this.paymentPlan.startDate = new Date(this.startDate)
       this.paymentPlan = Calculator.calculate(this.paymentPlan)
-      this.currentPage = 1
+      this.pagination = {
+        page: 1,
+        limit: 12,
+        offset: 0
+      }
       this.startDate = Date.now()
     }
   },
   computed: {
     currentPayments: function () {
-      let start = (this.currentPage - 1) * this.limit
-      let end = start + this.limit
+      let start = (this.pagination.page - 1) * this.pagination.limit
+      let end = start + this.pagination.limit
       return this.paymentPlan.paymentList.slice(start, end)
     }
   }

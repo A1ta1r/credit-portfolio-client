@@ -21,7 +21,7 @@ class PaymentPlan extends Model {
   routes () {
     return {
       fetch: '/loans/{id}',
-      save: '/loans/{id}'
+      save: '/loans'
     }
   }
 }
