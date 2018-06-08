@@ -1,14 +1,5 @@
 <template>
   <div class="hello">
-    <h2>Полезные ссылки</h2>
-    <ul>
-      <li>
-        <a href="#/calculator" target="_self">
-          Кредитный Калькулятор v1
-        </a>
-      </li>
-      <br>
-    </ul>
     <h2>Ecosystem</h2>
     <ul>
       <li>
