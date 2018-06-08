@@ -1,6 +1,13 @@
 <template>
   <div id="calculator" class="flex-container">
 
+    <p v-if="errorsMas.length">
+      <b>Пожалуйста исправьте указанные ошибки:</b>
+      <ul>
+        <li v-bind:key="error" v-for="error in errorsMas">{{ error }}</li>
+      </ul>
+    </p>
+
     <div class="form-group">
       <label>Сумма кредита</label>
       <input class="form-control" type="number" id="sum" min="1" v-model="paymentPlan.paymentAmount"
@@ -67,6 +74,7 @@ export default {
       startDate: Date.now(),
       datepickerLocale: ru,
       datepickerInput: 'form-control',
+      errorsMas: [], // Добавил массив ошибок, как в примере
       pagination: {
         page: 1,
         limit: 12,
@@ -76,14 +84,21 @@ export default {
   },
   methods: {
     calculation: function () {
-      this.paymentPlan.startDate = new Date(this.startDate)
-      this.paymentPlan = Calculator.calculate(this.paymentPlan)
-      this.pagination = {
-        page: 1,
-        limit: 12,
-        offset: 0
+      if (this.paymentPlan.paymentAmount && this.paymentPlan.numberOfMonths && this.paymentPlan.interestRate) {
+        this.paymentPlan.startDate = new Date(this.startDate)
+        this.paymentPlan = Calculator.calculate(this.paymentPlan)
+        this.pagination = {
+          page: 1,
+          limit: 12,
+          offset: 0
+        }
       }
-      this.startDate = Date.now()
+      this.errorsMas = []
+      if (!this.paymentPlan.paymentAmount) this.errorsMas.push('Требуется указать сумму кредита')
+      if (!this.paymentPlan.numberOfMonths) this.errorsMas.push('Требуется указать количество месяцев')
+      if (!this.paymentPlan.interestRate) this.errorsMas.push('Требуется указать процент в год')
+      // Тут ещё нужно удалить старый план оплат, чтоб при ошибке не было цифр внизу
+      // this.startDate = Date.now() - Эта строка сбрасывала дату начала платежей при нажатии кнопки "Расчитать"
     }
   },
   computed: {

@@ -15,7 +15,8 @@ class PaymentPlan extends Model {
       numberOfMonths: 0,
       paymentList: [],
       startDate: new Date(),
-      totalPaymentAmount: 0
+      totalPaymentAmount: 0,
+      errorsMas: [] // Добавил массив ошибок, как в примере
     }
   }
   routes () {
