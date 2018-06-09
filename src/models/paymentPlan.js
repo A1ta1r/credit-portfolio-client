@@ -1,8 +1,6 @@
 import {Model} from 'vue-mc'
 
-export default
-
-class PaymentPlan extends Model {
+export default class PaymentPlan extends Model {
   static LoanTypes = {'Even': 'Аннуитетный', 'Differentiated': 'Дифференцированный'}
 
   defaults () {
@@ -19,10 +17,18 @@ class PaymentPlan extends Model {
       errorsMas: [] // Добавил массив ошибок, как в примере
     }
   }
+
   routes () {
     return {
       fetch: '/loans/{id}',
       save: '/loans'
+    }
+  }
+
+  options () {
+    return {
+      validateOnChange: true,
+      validateOnSave: true
     }
   }
 }

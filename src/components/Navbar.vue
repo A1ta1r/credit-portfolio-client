@@ -1,17 +1,33 @@
 <template>
-  <nav class="d-inline-flex flex-row justify-content-center align-items-center">
-    <!-- Links -->
-    <router-link to="/calculator">Кредитный калькулятор</router-link>
-    <router-link to="/user">Профиль</router-link>  <!-- TODO динамически менять на компонент signin, когда нужно-->
+  <nav class="navbar navbar-toggleable-md navbar-light bg-success navbar-inverse">
+    <div class="navbar" id="navbar">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item" :key="route.title" v-for="route in routes">
+          <router-link :to="route" class="nav-link" active-class="active">
+            {{ route.title }}
+          </router-link>
+        </li>
+      </ul>
+    </div>
   </nav>
 </template>
 
 <script>
 export default {
   name: 'Navbar',
-  data () {
-    return {
-      active: 0
+  computed: {
+    routes: function () {
+      let routes = []
+      for (let i in this.$router.options.routes) {
+        if (!this.$router.options.routes.hasOwnProperty(i)) {
+          continue
+        }
+        let route = this.$router.options.routes[i]
+        if (route.hasOwnProperty('title')) {
+          routes.push(route)
+        }
+      }
+      return routes
     }
   }
 }

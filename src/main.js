@@ -4,6 +4,11 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import 'bootstrap-css'
+import VeeValidate from 'vee-validate'
+import ru from 'vee-validate/dist/locale/ru'
+
+VeeValidate.Validator.localize('ru', ru)
+Vue.use(VeeValidate)
 
 Vue.config.productionTip = false
 
