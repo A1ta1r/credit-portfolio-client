@@ -84,20 +84,39 @@ export default {
   },
   methods: {
     calculation: function () {
-      if (this.paymentPlan.paymentAmount && this.paymentPlan.numberOfMonths && this.paymentPlan.interestRate) {
-        this.paymentPlan.startDate = new Date(this.startDate)
-        this.paymentPlan = Calculator.calculate(this.paymentPlan)
-        this.pagination = {
-          page: 1,
-          limit: 12,
-          offset: 0
-        }
-      }
+      let paymAmnt = this.paymentPlan.paymentAmount
+      let numbMnth = this.paymentPlan.numberOfMonths
+      let intrRate = this.paymentPlan.interestRate
       this.errorsMas = []
-      if (!this.paymentPlan.paymentAmount) this.errorsMas.push('Требуется указать сумму кредита')
-      if (!this.paymentPlan.numberOfMonths) this.errorsMas.push('Требуется указать количество месяцев')
-      if (!this.paymentPlan.interestRate) this.errorsMas.push('Требуется указать процент в год')
-      // Тут ещё нужно удалить старый план оплат, чтоб при ошибке не было цифр внизу
+      if (paymAmnt && numbMnth && intrRate) {
+        if (!(paymAmnt <= 0 || paymAmnt > 999999999) && !(numbMnth <= 0 || numbMnth > 600) && !(intrRate <= 0 || intrRate > 2000)) {
+          if (!((numbMnth + '').indexOf('.') >= 0)) {
+            this.paymentPlan.startDate = new Date(this.startDate)
+            this.paymentPlan = Calculator.calculate(this.paymentPlan)
+            this.pagination = {
+              page: 1,
+              limit: 12,
+              offset: 0
+            }
+          } else {
+            this.errorsMas.push('Нецелое количество месяцев')
+            // Тут ещё нужно удалить старый план оплат, чтоб при ошибке не было цифр внизу
+          }
+        } else {
+          if (paymAmnt <= 0) this.errorsMas.push('Отрицательная или нулевая сумма кредита')
+          if (paymAmnt > 999999999) this.errorsMas.push('Слишком большое число суммы кредита')
+          if (numbMnth <= 0) this.errorsMas.push('Отрицательное или нулевое количество месяцев')
+          if (numbMnth > 600) this.errorsMas.push('Слишком большое число количества месяцев')
+          if (intrRate <= 0) this.errorsMas.push('Отрицательный или нулевой процент в год')
+          if (intrRate > 2000) this.errorsMas.push('Слишком большое число процента в год')
+          // Тут ещё нужно удалить старый план оплат, чтоб при ошибке не было цифр внизу
+        }
+      } else {
+        if (!paymAmnt) this.errorsMas.push('Требуется указать сумму кредита')
+        if (!numbMnth) this.errorsMas.push('Требуется указать количество месяцев')
+        if (!intrRate) this.errorsMas.push('Требуется указать процент в год')
+        // Тут ещё нужно удалить старый план оплат, чтоб при ошибке не было цифр внизу
+      }
       // this.startDate = Date.now() - Эта строка сбрасывала дату начала платежей при нажатии кнопки "Расчитать"
     }
   },
