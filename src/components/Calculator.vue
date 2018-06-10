@@ -1,32 +1,28 @@
 <template>
   <div id="calculator" class="flex-container">
 
-    <p v-if="errorsMas.length">
-      <b>Пожалуйста исправьте указанные ошибки:</b>
-      <ul>
-        <li v-bind:key="error" v-for="error in errorsMas">{{ error }}</li>
-      </ul>
-    </p>
-
-    <div class="form-group">
+    <div style="margin-bottom: 0pt" class="form-group" v-bind:class="{ 'has-danger': errorsCust.sum.length }">
       <label>Сумма кредита</label>
       <input class="form-control" type="number" id="sum" min="1" v-model="paymentPlan.paymentAmount"
              title="Сумма кредита"/>
     </div>
+    <span v-if="errorsCust.sum.length" v-bind:key="error" v-for="error in errorsCust.sum">{{error}}</span>
 
-    <div class="form-group">
+    <div style="margin-bottom: 0pt; margin-top: 10pt" class="form-group" v-bind:class="{ 'has-danger': errorsCust.month.length }">
       <label>Количество месяцев</label>
       <input class="form-control" type="number" id="month" min="1" v-model="paymentPlan.numberOfMonths"
              title="Количество месяцев"/>
     </div>
+    <span v-if="errorsCust.month.length" v-bind:key="error" v-for="error in errorsCust.month">{{error}}</span>
 
-    <div class="form-group">
+    <div style="margin-bottom: 0pt; margin-top: 10pt" class="form-group" v-bind:class="{ 'has-danger': errorsCust.rate.length }">
       <label>Процент в год</label>
       <input class="form-control" type="number" step="0.01" min="0" id="rate" v-model="paymentPlan.interestRate"
              title="Процент"/>
     </div>
+    <span v-if="errorsCust.rate.length" v-bind:key="error" v-for="error in errorsCust.rate">{{error}}</span>
 
-    <div class="form-group">
+    <div style="margin-top: 10pt" class="form-group">
       <label>Дата начала платежей</label>
       <datepicker :input-class="datepickerInput" :language="datepickerLocale" v-model="startDate"></datepicker>
     </div>
@@ -74,7 +70,11 @@ export default {
       startDate: Date.now(),
       datepickerLocale: ru,
       datepickerInput: 'form-control',
-      errorsMas: [], // Добавил массив ошибок, как в примере
+      errorsCust: {
+        sum: [],
+        month: [],
+        rate: []
+      }, // Добавил массив ошибок, как в примере
       pagination: {
         page: 1,
         limit: 12,
@@ -87,7 +87,9 @@ export default {
       let paymAmnt = this.paymentPlan.paymentAmount
       let numbMnth = this.paymentPlan.numberOfMonths
       let intrRate = this.paymentPlan.interestRate
-      this.errorsMas = []
+      this.errorsCust.sum = []
+      this.errorsCust.month = []
+      this.errorsCust.rate = []
       if (paymAmnt && numbMnth && intrRate) {
         if (!(paymAmnt <= 0 || paymAmnt > 999999999) && !(numbMnth <= 0 || numbMnth > 600) && !(intrRate <= 0 || intrRate > 2000)) {
           if (!((numbMnth + '').indexOf('.') >= 0)) {
@@ -99,25 +101,24 @@ export default {
               offset: 0
             }
           } else {
-            this.errorsMas.push('Нецелое количество месяцев')
+            this.errorsCust.month.push('Нецелое количество месяцев')
             // Тут ещё нужно удалить старый план оплат, чтоб при ошибке не было цифр внизу
           }
         } else {
-          if (paymAmnt <= 0) this.errorsMas.push('Отрицательная или нулевая сумма кредита')
-          if (paymAmnt > 999999999) this.errorsMas.push('Слишком большое число суммы кредита')
-          if (numbMnth <= 0) this.errorsMas.push('Отрицательное или нулевое количество месяцев')
-          if (numbMnth > 600) this.errorsMas.push('Слишком большое число количества месяцев')
-          if (intrRate <= 0) this.errorsMas.push('Отрицательный или нулевой процент в год')
-          if (intrRate > 2000) this.errorsMas.push('Слишком большое число процента в год')
+          if (paymAmnt <= 0) this.errorsCust.sum.push('Отрицательная или нулевая сумма кредита')
+          if (paymAmnt > 999999999) this.errorsCust.sum.push('Слишком большое число суммы кредита')
+          if (numbMnth <= 0) this.errorsCust.month.push('Отрицательное или нулевое количество месяцев')
+          if (numbMnth > 600) this.errorsCust.month.push('Слишком большое число количества месяцев')
+          if (intrRate <= 0) this.errorsCust.rate.push('Отрицательный или нулевой процент в год')
+          if (intrRate > 2000) this.errorsCust.rate.push('Слишком большое число процента в год')
           // Тут ещё нужно удалить старый план оплат, чтоб при ошибке не было цифр внизу
         }
       } else {
-        if (!paymAmnt) this.errorsMas.push('Требуется указать сумму кредита')
-        if (!numbMnth) this.errorsMas.push('Требуется указать количество месяцев')
-        if (!intrRate) this.errorsMas.push('Требуется указать процент в год')
+        if (!paymAmnt) this.errorsCust.sum.push('Требуется указать сумму кредита')
+        if (!numbMnth) this.errorsCust.month.push('Требуется указать количество месяцев')
+        if (!intrRate) this.errorsCust.rate.push('Требуется указать процент в год')
         // Тут ещё нужно удалить старый план оплат, чтоб при ошибке не было цифр внизу
       }
-      // this.startDate = Date.now() - Эта строка сбрасывала дату начала платежей при нажатии кнопки "Расчитать"
     }
   },
   computed: {

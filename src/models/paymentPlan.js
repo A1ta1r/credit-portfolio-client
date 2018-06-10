@@ -14,7 +14,11 @@ export default class PaymentPlan extends Model {
       paymentList: [],
       startDate: new Date(),
       totalPaymentAmount: 0,
-      errorsMas: [] // Добавил массив ошибок, как в примере
+      errorsCust: {
+        sum: [],
+        month: [],
+        rate: []
+      } // Добавил массив ошибок, как в примере
     }
   }
 
