@@ -8,14 +8,16 @@
     </div>
     <span v-if="errorsCust.sum.length" v-bind:key="error" v-for="error in errorsCust.sum">{{error}}</span>
 
-    <div style="margin-bottom: 0pt; margin-top: 10pt" class="form-group" v-bind:class="{ 'has-danger': errorsCust.month.length }">
+    <div style="margin-bottom: 0pt; margin-top: 10pt" class="form-group"
+         v-bind:class="{ 'has-danger': errorsCust.month.length }">
       <label>Количество месяцев</label>
       <input class="form-control" type="number" id="month" min="1" v-model="paymentPlan.numberOfMonths"
              title="Количество месяцев"/>
     </div>
     <span v-if="errorsCust.month.length" v-bind:key="error" v-for="error in errorsCust.month">{{error}}</span>
 
-    <div style="margin-bottom: 0pt; margin-top: 10pt" class="form-group" v-bind:class="{ 'has-danger': errorsCust.rate.length }">
+    <div style="margin-bottom: 0pt; margin-top: 10pt" class="form-group"
+         v-bind:class="{ 'has-danger': errorsCust.rate.length }">
       <label>Процент в год</label>
       <input class="form-control" type="number" step="0.01" min="0" id="rate" v-model="paymentPlan.interestRate"
              title="Процент"/>
@@ -37,6 +39,17 @@
         <input id="diffradio" type="radio" :value="diff" v-model="paymentPlan.paymentType">
         {{diff}}
       </label>
+      <div align="left">
+        <div v-if="paymentPlan.paymentType === diff">Вычисляется следующим образом:
+          <ul>ДП = ОСЗ / ПП + ОСЗ х ПС , где
+            <li>ДП - размер дифференцированного платежа</li>
+            <li>ОСЗ - остаток ссудной задолженности</li>
+            <li>ПП - количество периодов, оставшихся до погашения кредита</li>
+            <li>ПС - месячная процентная ставка по кредитному договору, равная 1/12 годовой процентной ставки</li>
+          </ul>
+        </div>
+        <div v-if="paymentPlan.paymentType === even">Равные выплаты каждый месяц</div>
+      </div>
     </div>
 
     <div class="form-control-static">
