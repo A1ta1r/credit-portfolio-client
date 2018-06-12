@@ -4,6 +4,7 @@ import HelloWorld from '@/components/HelloWorld'
 import Calculator from '@/components/Calculator'
 import Signup from '@/components/Signup'
 import Signin from '@/components/Signin'
+import UserPage from '@/components/UserPage'
 
 Vue.use(Router)
 
@@ -36,12 +37,14 @@ export default new Router({
       name: 'Signup',
       meta: {title: 'Регистрация'},
       component: Signup
+    },
+    {
+      title: 'Ваш кабинет',
+      path: '/user',
+      name: 'User',
+      meta: {title: 'Ваш кабинет'},
+      component: UserPage
     }
-    // {
-    //   path: '/user/:id',
-    //   name: 'User',
-    //   component: UserPage
-    // },
     // {
     //   path: '/advertiser/:id',
     //   name: 'Advertiser',
