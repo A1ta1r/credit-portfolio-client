@@ -5,6 +5,7 @@ export default class PaymentPlan extends Model {
 
   defaults () {
     return {
+      id: 0,
       title: 'Новый кредит',
       paymentType: PaymentPlan.LoanTypes.Even,
       paymentAmount: 0,
@@ -24,8 +25,8 @@ export default class PaymentPlan extends Model {
 
   routes () {
     return {
-      fetch: '/loans/{id}',
-      save: '/loans'
+      fetch: 'http://localhost:8000/plan/{id}',
+      save: 'http://localhost:8000/plan'
     }
   }
 

@@ -6,11 +6,24 @@ import router from './router'
 import 'bootstrap-css'
 import VeeValidate from 'vee-validate'
 import ru from 'vee-validate/dist/locale/ru'
+import axios from 'axios'
 
 VeeValidate.Validator.localize('ru', ru)
 Vue.use(VeeValidate)
 
 Vue.config.productionTip = false
+
+router.beforeEach((to, from, next) => {
+  document.title = to.meta.title
+  next()
+})
+
+export const HTTP = axios.create({
+  baseURL: location.hostname === 'localhost' ? 'http://localhost:8000' : 'https://quiet-waters-92239.herokuapp.com/',
+  headers: {
+    Authorization: 'Bearer {token}'
+  }
+})
 
 /* eslint-disable no-new */
 new Vue({

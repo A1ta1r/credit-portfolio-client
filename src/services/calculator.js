@@ -1,5 +1,5 @@
 import PaymentPlan from '../models/paymentPlan'
-import {Payment} from '../models/Payment'
+import {Payment} from '../models/payment'
 
 export default class Calculator {
   static calculate (plan) {
