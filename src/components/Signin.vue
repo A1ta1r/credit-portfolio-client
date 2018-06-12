@@ -1,5 +1,6 @@
 <template>
-  <div class="d-flex flex-column justify-content-center align-items-center col-md-4">
+  <div class="d-flex flex-column justify-content-center align-items-center">
+    <div class="col-md-4">
       <div class="form-group" :class="{'has-danger':errors.first('username') != null}">
         <label for="username">Имя пользователя:</label>
         <input id="username" type="text" class="form-control" name="username" data-vv-as="Имя пользователя"
@@ -15,6 +16,7 @@
       <div>
         <button type="submit" class="btn btn-primary" id="confirm_btn" @click="signin">Войти</button>
       </div>
+    </div>
   </div>
 </template>
 

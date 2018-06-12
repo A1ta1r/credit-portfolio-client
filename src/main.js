@@ -19,7 +19,7 @@ router.beforeEach((to, from, next) => {
 })
 
 export const HTTP = axios.create({
-  baseURL: location.hostname === 'localhost' ? 'http://localhost:8000' : 'https://https://protected-badlands-94104.herokuapp.com',
+  baseURL: location.hostname === 'localhost' ? 'http://localhost:8000' : 'https://protected-badlands-94104.herokuapp.com',
   headers: {
     Authorization: 'Bearer {token}'
   }
