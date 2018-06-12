@@ -1,6 +1,5 @@
 <template>
-  <div class="d-flex flex-row justify-content-center align-items-center">
-    <form class="col-md-4">
+  <div class="d-flex flex-column justify-content-center align-items-center col-md-4">
       <div class="form-group" :class="{'has-danger':errors.first('username') != null}">
         <label for="username">Имя пользователя:</label>
         <input id="username" type="text" class="form-control" name="username" data-vv-as="Имя пользователя"
@@ -14,9 +13,8 @@
       </div>
       <span>{{errors.first('password')}}</span>
       <div>
-        <button type="button" class="btn btn-primary" id="confirm_btn" @click="signin">Войти</button>
+        <button type="submit" class="btn btn-primary" id="confirm_btn" @click="signin">Войти</button>
       </div>
-    </form>
   </div>
 </template>
 
@@ -38,6 +36,7 @@ export default {
       this.$validator.validateAll().then((success) => {
         if (success) {
           signIn(this.settings.username, this.settings.password)
+          this.$router.push('/user/' + this.settings.username)
         }
       }).catch((error) => {
         console.log('err ' + error.message)

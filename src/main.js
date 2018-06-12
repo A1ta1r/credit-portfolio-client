@@ -14,16 +14,18 @@ Vue.use(VeeValidate)
 Vue.config.productionTip = false
 
 router.beforeEach((to, from, next) => {
-  document.title = to.meta.title
+  document.title = to.meta.title !== undefined ? to.meta.title : 'Кредитный портфель'
   next()
 })
 
 export const HTTP = axios.create({
-  baseURL: location.hostname === 'localhost' ? 'http://localhost:8000' : 'https://quiet-waters-92239.herokuapp.com/',
+  baseURL: location.hostname === 'localhost' ? 'http://localhost:8000' : 'https://https://protected-badlands-94104.herokuapp.com',
   headers: {
     Authorization: 'Bearer {token}'
   }
 })
+
+console.log(Object.keys(HTTP.defaults.headers))
 
 /* eslint-disable no-new */
 new Vue({

@@ -1,11 +1,14 @@
 import {HTTP} from '../main'
 
 export function signIn (username, password) {
-  HTTP.post('/signin', {
-    username: this.settings.username,
-    password: this.settings.password
+  console.log('signin...')
+  return HTTP.post('/signin', {
+    username: username,
+    password: password
   }).then((response) => {
-    HTTP['Authorization'] = 'Bearer ' + response.data.token
+    HTTP.defaults.headers.Authorization = 'Bearer ' + response.data.token
+    console.log('done signin')
+    console.log(HTTP.defaults.headers.Authorization)
   }).catch((error) => {
     console.log(error.message)
   })
@@ -16,7 +19,8 @@ export function refreshToken () {
     username: this.settings.username,
     password: this.settings.password
   }).then((response) => {
-    HTTP['Authorization'] = 'Bearer ' + response.data.token
+    HTTP.defaults.headers.Authorization = 'Bearer ' + response.data.token
+    console.log(HTTP.headers)
   }).catch((error) => {
     console.log(error.message)
   })
