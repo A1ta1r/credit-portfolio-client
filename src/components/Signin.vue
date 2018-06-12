@@ -4,13 +4,13 @@
       <div class="form-group" :class="{'has-danger':errors.first('username') != null}">
         <label for="username">Имя пользователя:</label>
         <input id="username" type="text" class="form-control" name="username" data-vv-as="Имя пользователя"
-               v-validate="'required'" v-model="settings.username">
+               v-validate="'required'" v-model="settings.username" placeholder="Укажите имя пользователя">
       </div>
       <span>{{errors.first('username')}}</span>
       <div class="form-group" :class="{'has-danger':errors.has('password')}">
         <label for="password">Пароль:</label>
         <input id="password" type="password" class="form-control" name="password" data-vv-as="Пароль"
-               v-validate="'required'" v-model="settings.password">
+               v-validate="'required'" v-model="settings.password" placeholder="Укажите пароль">
       </div>
       <span>{{errors.first('password')}}</span>
       <div>

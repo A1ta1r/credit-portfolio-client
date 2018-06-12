@@ -16,13 +16,8 @@
 
 export default {
   name: 'Navbar',
-  data () {
-    return {
-      routes: this.resolveRoutes
-    }
-  },
-  methods: {
-    resolveRoutes: function () {
+  computed: {
+    routes: function () {
       let routes = []
       for (let i in this.$router.options.routes) {
         if (!this.$router.options.routes.hasOwnProperty(i)) {
@@ -34,10 +29,6 @@ export default {
         }
       }
       return routes
-    },
-    isLogged: function () {
-      let token = this.$localStorage.get('token')
-      return !!token
     }
   }
 }
