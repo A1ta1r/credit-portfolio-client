@@ -34,45 +34,45 @@
 </template>
 
 <script>
-  import User from '../models/user'
-  import {signIn} from '../services/auth'
+import User from '../models/user'
+import {signIn} from '../services/auth'
 
-  export default {
-    name: 'Signup',
-    data: function () {
-      return {
-        settings: {
-          email: '',
-          username: '',
-          password: '',
-          password_confirmation: ''
-        }
-      }
-    },
-    methods: {
-      signup: function () {
-        this.$validator.validateAll().then((success) => {
-          if (success) {
-            let user = new User(
-              this.settings.username,
-              this.settings.password,
-              this.settings.email
-            )
-            user.save().then(() => {
-              signIn(user.username, user.password).then(() => {
-                this.$router.push('/user/' + this.settings.username)
-                user.fetch().then(() => {
-                })
-              })
-            })
-          }
-        }).catch((error) => {
-          console.log('err ' + error.message)
-          this.errors.push(error)
-        })
+export default {
+  name: 'Signup',
+  data: function () {
+    return {
+      settings: {
+        email: '',
+        username: '',
+        password: '',
+        password_confirmation: ''
       }
     }
+  },
+  methods: {
+    signup: function () {
+      this.$validator.validateAll().then((success) => {
+        if (success) {
+          let user = new User(
+            this.settings.username,
+            this.settings.password,
+            this.settings.email
+          )
+          user.save().then(() => {
+            signIn(user.username, user.password).then(() => {
+              this.$router.push('/user/' + this.settings.username)
+              user.fetch().then(() => {
+              })
+            })
+          })
+        }
+      }).catch((error) => {
+        console.log('err ' + error.message)
+        this.errors.push(error)
+      })
+    }
   }
+}
 </script>
 
 <style scoped>

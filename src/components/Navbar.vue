@@ -13,10 +13,16 @@
 </template>
 
 <script>
+
 export default {
   name: 'Navbar',
-  computed: {
-    routes: function () {
+  data () {
+    return {
+      routes: this.resolveRoutes
+    }
+  },
+  methods: {
+    resolveRoutes: function () {
       let routes = []
       for (let i in this.$router.options.routes) {
         if (!this.$router.options.routes.hasOwnProperty(i)) {
@@ -28,6 +34,10 @@ export default {
         }
       }
       return routes
+    },
+    isLogged: function () {
+      let token = this.$localStorage.get('token')
+      return !!token
     }
   }
 }
