@@ -39,6 +39,7 @@ export default {
         if (success) {
           signIn(this.settings.username, this.settings.password)
           this.$router.push('/user/' + this.settings.username)
+          localStorage.setItem('username', this.settings.username)
         }
       }).catch((error) => {
         console.log('err ' + error.message)

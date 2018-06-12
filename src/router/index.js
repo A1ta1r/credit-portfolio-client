@@ -40,7 +40,7 @@ export default new Router({
     },
     {
       title: 'Ваш кабинет',
-      path: '/user',
+      path: '/user/:id',
       name: 'User',
       meta: {title: 'Ваш кабинет'},
       component: UserPage

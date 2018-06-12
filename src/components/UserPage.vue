@@ -8,28 +8,32 @@
       </div>
       <div class="col-sm-8 text-left">
         <div class="text-center">
-          <h3>Бомжара</h3><br>
+          <h3>{{ username }}</h3><br>
           <div class="row">
             <div class="leftColumn">Доходы
               <table cellspacing="0" class="my-table">
                 <tr>
-                  <td class="sumColumn">
-                    <input class="form-control" v-model="currentIncome.sum" placeholder="сумма" min="0" type="text"/>
+                  <td class="sumColumn" :class="{'has-danger':errors.first('incomeSum') != null}">
+                    <input class="form-control" name="incomeSum" v-model="currentIncome.sum" data-vv-as="сумма"
+                           v-validate="{ required: true, numeric: true, min_value:1 }" placeholder="сумма" type="text"/>
                   </td>
                   <td class="reasonColumn">
-                    <input class="form-control" v-model="currentIncome.source" placeholder="источник" type="text"/>
+                    <input class="form-control" name="sourceIncome" v-model="currentIncome.source"
+                           placeholder="источник" type="text"/>
                   </td>
                   <td>
                     <input class="btn btn-secondary" v-on:click="addIncome" title="Добавить" value="+" type="submit"/>
                   </td>
                 </tr>
               </table>
+              <span>{{ errors.first('incomeSum') }}</span>
             </div>
             <td class="rightColumn">Расходы
               <table cellspacing="0" class="my-table">
                 <tr>
-                  <td class="sumColumn">
-                    <input class="form-control" v-model="currentExpense.sum" placeholder="сумма" min="0" type="text"/>
+                  <td class="sumColumn" :class="{'has-danger':errors.first('expenseSum') != null}">
+                    <input class="form-control" v-model="currentExpense.sum" data-vv-as="сумма" placeholder="сумма"
+                           name="expenseSum" v-validate="{ required:true, numeric:true, min_value:1 }" type="text"/>
                   </td>
                   <td class="reasonColumn">
                     <input class="form-control" v-model="currentExpense.reason" placeholder="источник" type="text"/>
@@ -39,6 +43,7 @@
                   </td>
                 </tr>
               </table>
+              <span>{{errors.first('expenseSum')}}</span>
             </td>
           </div>
           <hr/>
@@ -55,6 +60,9 @@
                 <tr v-bind:key="item" v-for="item in income" class="form-control-static">
                   <td>{{ item.sum }}</td>
                   <td>{{ item.source }}</td>
+                  <td>
+                    <input type="submit" name="deleteIncome" :click="deleteIncome" />
+                  </td>
                 </tr>
               </table>
             </div>
@@ -75,7 +83,7 @@
             </td>
           </div>
         </div>
-        <div class="col-sm-2 sidenav">
+        <div class="col-sm-2">
           <div class="well">
             <p>ADS</p>
           </div>
@@ -95,6 +103,7 @@ export default {
   components: {},
   data () {
     return {
+      username: localStorage.getItem('username'),
       income: [],
       expense: [],
       currentIncome: {
@@ -109,18 +118,30 @@ export default {
   },
   methods: {
     addIncome: function () {
-      this.income.push(this.currentIncome)
-      this.currentIncome = {
-        sum: 0,
-        source: ''
-      }
+      this.$validator.validate('incomeSum').then((success) => {
+        if (success) {
+          this.income.push(this.currentIncome)
+          this.currentIncome = {
+            sum: 0,
+            source: ''
+          }
+        }
+      })
     },
     addExpense: function () {
-      this.expense.push(this.currentExpense)
-      this.currentExpense = {
-        sum: 0,
-        reason: ''
-      }
+      this.$validator.validate('expenseSum').then((success) => {
+        if (success) {
+          this.expense.push(this.currentExpense)
+          this.currentExpense = {
+            sum: 0,
+            reason: ''
+          }
+        }
+      })
+    },
+    deleteIncome: function () {
+    },
+    deleteExpense: function () {
     }
   }
 }
