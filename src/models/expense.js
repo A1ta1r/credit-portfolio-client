@@ -3,6 +3,7 @@ export default class Expense {
   user
   reason
   amount
+  endDate
 
   assignToUser (user) {
     user.expenses.push(this)
