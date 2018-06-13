@@ -39,10 +39,10 @@ export default new Router({
       component: Signup
     },
     {
-      title: 'Ваш кабинет',
+      title: 'Личный кабинет',
       path: '/user/:id',
       name: 'User',
-      meta: {title: 'Ваш кабинет'},
+      meta: {title: 'Личный кабинет'},
       component: UserPage
     }
     // {
