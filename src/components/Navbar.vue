@@ -8,9 +8,6 @@
         <router-link v-if="!isLoggedIn" :to="signup" class="nav-link" active-class="active">{{ signup.title }}</router-link>
       </li>
       <li class="nav-item">
-        <router-link v-if="!isLoggedIn" :to="signin" class="nav-link" active-class="active">{{ signin.title }}</router-link>
-      </li>
-      <li class="nav-item">
         <router-link v-if="isLoggedIn" :to="userpage" class="nav-link" active-class="active">{{ userpage.title }}</router-link>
       </li>
       <li class="nav-item">
@@ -18,6 +15,9 @@
       </li>
       <li class="nav-item">
         <router-link :to="signout" v-if="isLoggedIn" class="nav-link" v-bind:onclick="clearCredentials">{{ signout.title }}</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link v-if="!isLoggedIn" :to="signin" class="nav-link" active-class="active">{{ signin.title }}</router-link>
       </li>
     </ul>
   </nav>
