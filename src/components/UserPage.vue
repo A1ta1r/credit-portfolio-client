@@ -1,19 +1,20 @@
 <template>
   <div class="container-fluid text-center">
+    <label>{{user.username}}</label>
     <div class="row content">
       <div class="col-sm-8 text-left">
         <div class="text-center">
-          <h3>{{user.username}}</h3><br>
+          <h3>{{ username }}</h3><br>
           <div class="row">
             <div class="leftColumn">Доходы
               <table cellspacing="0" class="my-table">
                 <tr>
                   <td class="sumColumn" :class="{'has-danger':errors.first('incomeSum') != null}">
-                    <input class="form-control" name="incomeSum" v-model="currentIncome.amount" data-vv-as="сумма"
+                    <input class="form-control" name="incomeSum" v-model="currentIncome.sum" data-vv-as="сумма"
                            v-validate="{ required: true, numeric: true, min_value:1 }" placeholder="сумма" type="text"/>
                   </td>
                   <td class="reasonColumn">
-                    <input class="form-control" name="sourceIncome" v-model="currentIncome.reason"
+                    <input class="form-control" name="sourceIncome" v-model="currentIncome.source"
                            placeholder="источник" type="text"/>
                   </td>
                   <td>
@@ -75,17 +76,23 @@
 </template>
 
 <script>
+import User from '../models/user'
+
 export default {
   name: 'userPage',
   components: {},
   data () {
     return {
       username: localStorage.getItem('username'),
+      user: function () {
+        let user = new User()
+        return user.fetch().then((response) => {console.log(response)})
+      },
       income: [],
       expense: [],
       currentIncome: {
-        amount: '',
-        reason: ''
+        sum: '',
+        source: ''
       },
       currentExpense: {
         sum: '',
@@ -98,12 +105,11 @@ export default {
       this.$validator.validate('incomeSum').then((success) => {
         if (success) {
           this.income.push(this.currentIncome)
-          this.user.incomes.push({amount: Number(this.currentIncome.amount), reason: this.currentIncome.reason
-          })
+          this.user.incomes.push(this.currentIncome)
           this.user.update()
           this.currentIncome = {
-            amount: '',
-            reason: ''
+            sum: '',
+            source: ''
           }
         }
       })
