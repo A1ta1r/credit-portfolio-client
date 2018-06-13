@@ -18,11 +18,11 @@ export default new Router({
       component: HelloWorld
     },
     {
-      title: 'Калькулятор',
-      path: '/calculator',
-      name: 'Calculator',
-      meta: {title: 'Калькулятор'},
-      component: Calculator
+      title: 'Регистрация',
+      path: '/signup',
+      name: 'Signup',
+      meta: {title: 'Регистрация'},
+      component: Signup
     },
     {
       title: 'Вход в систему',
@@ -32,28 +32,24 @@ export default new Router({
       component: Signin
     },
     {
-      title: 'Регистрация',
-      path: '/signup',
-      name: 'Signup',
-      meta: {title: 'Регистрация'},
-      component: Signup
-    },
-    {
       title: 'Личный кабинет',
-      path: '/user/:id',
+      path: '/user/profile',
       name: 'User',
       meta: {title: 'Личный кабинет'},
       component: UserPage
+    },
+    {
+      title: 'Калькулятор',
+      path: '/calculator',
+      name: 'Calculator',
+      meta: {title: 'Калькулятор'},
+      component: Calculator
+    },
+    {
+      title: 'Выход',
+      path: '/signout',
+      name: 'Signout',
+      meta: {title: 'Выход'}
     }
-    // {
-    //   path: '/advertiser/:id',
-    //   name: 'Advertiser',
-    //   component: AdvertiserPage
-    // },
-    // {
-    //   path: '/advertiser/:id/ads',
-    //   name: 'Ads',
-    //   component: AdsPage
-    // }
   ]
 })

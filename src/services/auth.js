@@ -10,8 +10,10 @@ export function signIn (username, password) {
   }).then((response) => {
     localStorage.setItem('token', 'Bearer ' + response.data.token)
     localStorage.setItem('username', username)
+    return true
   }).catch((error) => {
     console.log(error.message)
+    throw error
   })
 }
 

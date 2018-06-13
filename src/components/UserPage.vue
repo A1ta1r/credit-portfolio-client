@@ -86,7 +86,7 @@ export default {
       username: localStorage.getItem('username'),
       user: function () {
         let user = new User()
-        return user.fetch().then((response) => {console.log(response)})
+        return user.fetch().then((response) => { console.log(response) })
       },
       income: [],
       expense: [],

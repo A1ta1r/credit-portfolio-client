@@ -60,9 +60,7 @@ export default {
           )
           user.save().then(() => {
             signIn(user.username, user.password).then(() => {
-              this.$router.push('/user/' + this.settings.username)
-              user.fetch().then(() => {
-              })
+              this.$router.push('/user/profile')
             })
           })
         }
