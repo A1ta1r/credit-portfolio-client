@@ -49,35 +49,26 @@
           <hr/>
           <div class="row">
             <div class="leftColumn">
-              <table class="table table-bordered">
-                <thead>
-                <tr>
-                  <!--<th class="sumcol">Сумма</th>-->
-                  <!--<th class="reasoncol" >Источник</th>-->
-                  <!--<th> </th>-->
-                </tr>
-                </thead>
+              <table class="myFavoriteTable table table-bordered">
                 <tr v-bind:key="item" v-for="item in income" class="form-control-static">
                   <td>{{ item.sum }}</td>
                   <td>{{ item.source }}</td>
-                  <td>
-                    <input type="submit" name="deleteIncome" :click="deleteIncome" />
+                  <td class="deleteRow">
+                    <input type="btn btn-secondary" name="deleteIncome" class="form-control" title="Удалить" value="—"
+                           @click="deleteIncome(item, $event)" />
                   </td>
                 </tr>
               </table>
             </div>
             <td class="rightColumn">
               <table class="table table-bordered">
-                <thead>
-                <tr>
-                  <!--<th class="sumcol">Сумма</th>-->
-                  <!--<th class="reasoncol" >Источник</th>-->
-                  <!--<th> </th>-->
-                </tr>
-                </thead>
                 <tr v-bind:key="item" v-for="item in expense" class="form-control-static">
                   <td>{{ item.sum }}</td>
                   <td>{{ item.reason }}</td>
+                  <td class="deleteRow">
+                    <input type="btn btn-secondary" class="form-control" title="Удалить" value="—"  name="deleteIncome"
+                           @click="deleteExpense(item, $event)" />
+                  </td>
                 </tr>
               </table>
             </td>
@@ -97,7 +88,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'userPage',
   components: {},
@@ -107,11 +97,11 @@ export default {
       income: [],
       expense: [],
       currentIncome: {
-        sum: 0,
+        sum: '',
         source: ''
       },
       currentExpense: {
-        sum: 0,
+        sum: '',
         reason: ''
       }
     }
@@ -122,7 +112,7 @@ export default {
         if (success) {
           this.income.push(this.currentIncome)
           this.currentIncome = {
-            sum: 0,
+            sum: '',
             source: ''
           }
         }
@@ -133,15 +123,19 @@ export default {
         if (success) {
           this.expense.push(this.currentExpense)
           this.currentExpense = {
-            sum: 0,
+            sum: '',
             reason: ''
           }
         }
       })
     },
-    deleteIncome: function () {
+    deleteIncome (incomeObj, event) {
+      let index = this.income.indexOf(incomeObj)
+      this.income.splice(index, 1)
     },
-    deleteExpense: function () {
+    deleteExpense (expenseObj, event) {
+      let index = this.expense.indexOf(expenseObj)
+      this.expense.splice(index, 1)
     }
   }
 }
@@ -169,6 +163,10 @@ export default {
 
   .reasonColumn {
     width: 70%;
+  }
+
+  .deleteRow {
+    width: 65px;
   }
 
 </style>
