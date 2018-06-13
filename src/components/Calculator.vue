@@ -1,14 +1,14 @@
 <template>
   <div id="calculator" class="flex-container">
 
-    <div style="margin-bottom: 0pt" class="form-group" v-bind:class="{ 'has-danger': errorsCust.sum.length }">
+    <div style="margin-bottom: 0" class="form-group" v-bind:class="{ 'has-danger': errorsCust.sum.length }">
       <label>Сумма кредита</label>
       <input class="form-control" type="number" id="sum" min="1" v-model="paymentPlan.paymentAmount"
              title="Сумма кредита"/>
     </div>
     <span v-if="errorsCust.sum.length" v-bind:key="error" v-for="error in errorsCust.sum">{{error}}</span>
 
-    <div style="margin-bottom: 0pt; margin-top: 10pt" class="form-group"
+    <div style="margin-bottom: 0; margin-top: 10pt" class="form-group"
          v-bind:class="{ 'has-danger': errorsCust.month.length }">
       <label>Количество месяцев</label>
       <input class="form-control" type="number" id="month" min="1" v-model="paymentPlan.numberOfMonths"
@@ -16,7 +16,7 @@
     </div>
     <span v-if="errorsCust.month.length" v-bind:key="error" v-for="error in errorsCust.month">{{error}}</span>
 
-    <div style="margin-bottom: 0pt; margin-top: 10pt" class="form-group"
+    <div style="margin-bottom: 0; margin-top: 10pt" class="form-group"
          v-bind:class="{ 'has-danger': errorsCust.rate.length }">
       <label>Процент в год</label>
       <input class="form-control" type="number" step="0.01" min="0" id="rate" v-model="paymentPlan.interestRate"

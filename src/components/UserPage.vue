@@ -1,11 +1,6 @@
 <template>
   <div class="container-fluid text-center">
     <div class="row content">
-      <div class="col-sm-2 sidenav">
-        <p><a href="#">Link</a></p>
-        <p><a href="#">Link</a></p>
-        <p><a href="#">Link</a></p>
-      </div>
       <div class="col-sm-8 text-left">
         <div class="text-center">
           <h3>{{ username }}</h3><br>
@@ -51,10 +46,10 @@
             <div class="leftColumn">
               <table class="myFavoriteTable table table-bordered">
                 <tr v-bind:key="item" v-for="item in income" class="form-control-static">
-                  <td>{{ item.sum }}</td>
+                  <td>₽{{ item.sum }}.00</td>
                   <td>{{ item.source }}</td>
                   <td class="deleteRow">
-                    <input type="btn btn-secondary" name="deleteIncome" class="form-control" title="Удалить" value="—"
+                    <input type="button" name="deleteIncome" class="btn btn-secondary" title="Удалить" value="—"
                            @click="deleteIncome(item, $event)" />
                   </td>
                 </tr>
@@ -63,23 +58,15 @@
             <td class="rightColumn">
               <table class="table table-bordered">
                 <tr v-bind:key="item" v-for="item in expense" class="form-control-static">
-                  <td>{{ item.sum }}</td>
+                  <td>₽{{ item.sum }}.00</td>
                   <td>{{ item.reason }}</td>
                   <td class="deleteRow">
-                    <input type="btn btn-secondary" class="form-control" title="Удалить" value="—"  name="deleteIncome"
+                    <input type="button" class="btn btn-secondary" title="Удалить" value="—"  name="deleteIncome"
                            @click="deleteExpense(item, $event)" />
                   </td>
                 </tr>
               </table>
             </td>
-          </div>
-        </div>
-        <div class="col-sm-2">
-          <div class="well">
-            <p>ADS</p>
-          </div>
-          <div class="well">
-            <p>ADS</p>
           </div>
         </div>
       </div>
