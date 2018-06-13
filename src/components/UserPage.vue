@@ -1,20 +1,21 @@
 <template>
   <div class="container-fluid text-center">
-    <label>{{user.username}}</label>
     <div class="row content">
       <div class="col-sm-8 text-left">
+        <div class="col-sm-2">
+        </div>
         <div class="text-center">
-          <h3>{{ username }}</h3><br>
+          <h3>{{user.username}}</h3><br>
           <div class="row">
             <div class="leftColumn">Доходы
               <table cellspacing="0" class="my-table">
                 <tr>
                   <td class="sumColumn" :class="{'has-danger':errors.first('incomeSum') != null}">
-                    <input class="form-control" name="incomeSum" v-model="currentIncome.sum" data-vv-as="сумма"
+                    <input class="form-control" name="incomeSum" v-model="currentIncome.amount" data-vv-as="сумма"
                            v-validate="{ required: true, numeric: true, min_value:1 }" placeholder="сумма" type="text"/>
                   </td>
                   <td class="reasonColumn">
-                    <input class="form-control" name="sourceIncome" v-model="currentIncome.source"
+                    <input class="form-control" name="sourceIncome" v-model="currentIncome.reason"
                            placeholder="источник" type="text"/>
                   </td>
                   <td>
@@ -34,6 +35,12 @@
                   <td class="reasonColumn">
                     <input class="form-control" v-model="currentExpense.reason" placeholder="источник" type="text"/>
                   </td>
+                  <td class="sumColumn">
+                    <datepicker :input-class="datepickerInput" :language="datepickerLocale"
+                                v-model="currentExpense.endDate">
+                      <!--<image href="https://www.iconfinder.com/icons/285670/download/png/256"/>-->
+                    </datepicker>
+                  </td>
                   <td>
                     <input class="btn btn-secondary" v-on:click="addExpense" title="Добавить" value="+" type="submit"/>
                   </td>
@@ -46,9 +53,9 @@
           <div class="row">
             <div class="leftColumn">
               <table class="myFavoriteTable table table-bordered">
-                <tr v-bind:key="item" v-for="item in income" class="form-control-static">
-                  <td>₽{{ item.sum }}.00</td>
-                  <td>{{ item.source }}</td>
+                <tr v-bind:key="item" v-for="item in user.incomes" class="form-control-static">
+                  <td>₽{{ item.amount }}.00</td>
+                  <td>{{ item.reason }}</td>
                   <td class="deleteRow">
                     <input type="button" name="deleteIncome" class="btn btn-secondary" title="Удалить" value="—"
                            @click="deleteIncome(item, $event)" />
@@ -58,9 +65,10 @@
             </div>
             <td class="rightColumn">
               <table class="table table-bordered">
-                <tr v-bind:key="item" v-for="item in expense" class="form-control-static">
+                <tr v-bind:key="item" v-for="item in user.expenses" class="form-control-static">
                   <td>₽{{ item.sum }}.00</td>
                   <td>{{ item.reason }}</td>
+                  <td>{{ item.endDate }}</td>
                   <td class="deleteRow">
                     <input type="button" class="btn btn-secondary" title="Удалить" value="—"  name="deleteIncome"
                            @click="deleteExpense(item, $event)" />
@@ -77,39 +85,33 @@
 
 <script>
 import User from '../models/user'
+import Income from '../models/income'
+import Expense from '../models/expense'
+import Datepicker from 'vuejs-datepicker'
+import {ru} from 'vuejs-datepicker/dist/locale'
 
 export default {
   name: 'userPage',
-  components: {},
+  components: { Datepicker },
   data () {
     return {
+      user: {},
       username: localStorage.getItem('username'),
-      user: function () {
-        let user = new User()
-        return user.fetch().then((response) => { console.log(response) })
-      },
-      income: [],
-      expense: [],
-      currentIncome: {
-        sum: '',
-        source: ''
-      },
-      currentExpense: {
-        sum: '',
-        reason: ''
-      }
+      currentIncome: Income,
+      currentExpense: Expense,
+      datepickerLocale: ru,
+      datepickerInput: 'form-control'
     }
   },
   methods: {
     addIncome: function () {
       this.$validator.validate('incomeSum').then((success) => {
         if (success) {
-          this.income.push(this.currentIncome)
           this.user.incomes.push(this.currentIncome)
           this.user.update()
           this.currentIncome = {
-            sum: '',
-            source: ''
+            amount: '',
+            reason: ''
           }
         }
       })
@@ -117,26 +119,31 @@ export default {
     addExpense: function () {
       this.$validator.validate('expenseSum').then((success) => {
         if (success) {
-          this.expense.push(this.currentExpense)
-          this.user.incomes.push(this.currentExpense)
+          this.user.expense.push(this.currentExpense)
           this.user.update()
           this.currentExpense = {
             sum: '',
-            reason: ''
+            reason: '',
+            endDate: Date.now()
           }
         }
       })
     },
     deleteIncome (incomeObj, event) {
-      let index = this.income.indexOf(incomeObj)
-      this.income.splice(index, 1)
+      let index = this.user.incomes.indexOf(incomeObj)
       this.user.incomes.splice(index, 1)
     },
     deleteExpense (expenseObj, event) {
-      let index = this.expense.indexOf(expenseObj)
-      this.expense.splice(index, 1)
+      let index = this.user.expenses.indexOf(expenseObj)
       this.user.expenses.splice(index, 1)
     }
+  },
+  created: function () {
+    let user = new User()
+    user.username = localStorage.getItem('username')
+    user.fetch().then(x => {
+      this.user = user
+    })
   }
 }
 
