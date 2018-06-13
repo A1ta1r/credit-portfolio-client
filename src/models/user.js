@@ -6,6 +6,9 @@ export default class User {
   username
   password
   role
+  incomes
+  expenses
+  paymentPlans
 
   constructor (username, password, email) {
     this.username = username
@@ -14,7 +17,7 @@ export default class User {
   }
 
   fetch () {
-    return HTTP.get('/user/' + this.username, {
+    return HTTP.get('/user/name/' + this.username, {
       headers: {
         Authorization: localStorage.getItem('token')
       }
@@ -22,6 +25,8 @@ export default class User {
       this.email = response.data.email
       this.id = response.data.id
       this.role = response.data.roleId
+      this.incomes = response.data.incomes
+      this.expenses = response.data.expenses
     }).catch((error) => {
       console.log(error)
     })
@@ -35,6 +40,16 @@ export default class User {
     }).then(() => {
     }).catch((error) => {
       console.log(error)
+    })
+  }
+
+  update () {
+    return HTTP.post('/user/update', this, {
+      headers: {
+        Authorization: localStorage.getItem('token')
+      }
+    }).then(() => {
+
     })
   }
 

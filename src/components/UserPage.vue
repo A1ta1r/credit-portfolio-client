@@ -3,17 +3,17 @@
     <div class="row content">
       <div class="col-sm-8 text-left">
         <div class="text-center">
-          <h3>{{ username }}</h3><br>
+          <h3>{{user.username}}</h3><br>
           <div class="row">
             <div class="leftColumn">Доходы
               <table cellspacing="0" class="my-table">
                 <tr>
                   <td class="sumColumn" :class="{'has-danger':errors.first('incomeSum') != null}">
-                    <input class="form-control" name="incomeSum" v-model="currentIncome.sum" data-vv-as="сумма"
+                    <input class="form-control" name="incomeSum" v-model="currentIncome.amount" data-vv-as="сумма"
                            v-validate="{ required: true, numeric: true, min_value:1 }" placeholder="сумма" type="text"/>
                   </td>
                   <td class="reasonColumn">
-                    <input class="form-control" name="sourceIncome" v-model="currentIncome.source"
+                    <input class="form-control" name="sourceIncome" v-model="currentIncome.reason"
                            placeholder="источник" type="text"/>
                   </td>
                   <td>
@@ -84,8 +84,8 @@ export default {
       income: [],
       expense: [],
       currentIncome: {
-        sum: '',
-        source: ''
+        amount: '',
+        reason: ''
       },
       currentExpense: {
         sum: '',
@@ -98,9 +98,12 @@ export default {
       this.$validator.validate('incomeSum').then((success) => {
         if (success) {
           this.income.push(this.currentIncome)
+          this.user.incomes.push({amount: Number(this.currentIncome.amount), reason: this.currentIncome.reason
+          })
+          this.user.update()
           this.currentIncome = {
-            sum: '',
-            source: ''
+            amount: '',
+            reason: ''
           }
         }
       })
@@ -109,6 +112,8 @@ export default {
       this.$validator.validate('expenseSum').then((success) => {
         if (success) {
           this.expense.push(this.currentExpense)
+          this.user.incomes.push(this.currentExpense)
+          this.user.update()
           this.currentExpense = {
             sum: '',
             reason: ''
@@ -119,10 +124,12 @@ export default {
     deleteIncome (incomeObj, event) {
       let index = this.income.indexOf(incomeObj)
       this.income.splice(index, 1)
+      this.user.incomes.splice(index, 1)
     },
     deleteExpense (expenseObj, event) {
       let index = this.expense.indexOf(expenseObj)
       this.expense.splice(index, 1)
+      this.user.expenses.splice(index, 1)
     }
   }
 }
