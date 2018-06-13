@@ -14,6 +14,8 @@ export default class User {
     this.username = username
     this.password = password
     this.email = email
+    this.incomes = []
+    this.expenses = []
   }
 
   fetch () {
@@ -61,7 +63,7 @@ export default class User {
     if (username === undefined) {
       return undefined
     }
-    return HTTP.get('/user/' + username, {
+    return HTTP.get('/user/username' + username, {
       headers: {
         Authorization: localStorage.getItem('token')
       }

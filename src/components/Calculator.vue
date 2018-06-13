@@ -84,7 +84,7 @@ export default {
       datepickerLocale: ru,
       datepickerInput: 'form-control',
       errorsCust: {
-        sum: [],
+        amount: [],
         month: [],
         rate: []
       }, // Добавил массив ошибок, как в примере
@@ -100,7 +100,7 @@ export default {
       let paymAmnt = this.paymentPlan.paymentAmount
       let numbMnth = this.paymentPlan.numberOfMonths
       let intrRate = this.paymentPlan.interestRate
-      this.errorsCust.sum = []
+      this.errorsCust.amount = []
       this.errorsCust.month = []
       this.errorsCust.rate = []
       if (paymAmnt && numbMnth && intrRate) {

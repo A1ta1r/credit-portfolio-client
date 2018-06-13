@@ -16,7 +16,7 @@ export default class PaymentPlan extends Model {
       startDate: new Date(),
       totalPaymentAmount: 0,
       errorsCust: {
-        sum: [],
+        amount: [],
         month: [],
         rate: []
       } // Добавил массив ошибок, как в примере

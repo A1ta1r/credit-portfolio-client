@@ -29,7 +29,7 @@
               <table cellspacing="0" class="my-table">
                 <tr>
                   <td class="sumColumn" :class="{'has-danger':errors.first('expenseSum') != null}">
-                    <input class="form-control" v-model="currentExpense.sum" data-vv-as="сумма" placeholder="сумма"
+                    <input class="form-control" v-model="currentExpense.amount" data-vv-as="сумма" placeholder="сумма"
                            name="expenseSum" v-validate="{ required:true, numeric:true, min_value:1 }" type="text"/>
                   </td>
                   <td class="reasonColumn">
@@ -66,9 +66,9 @@
             <td class="rightColumn">
               <table class="table table-bordered">
                 <tr v-bind:key="item" v-for="item in user.expenses" class="form-control-static">
-                  <td>₽{{ item.sum }}.00</td>
+                  <td>₽{{ item.amount }}.00</td>
                   <td>{{ item.reason }}</td>
-                  <td>{{ item.endDate }}</td>
+                  <td>До {{ (new Date(item.endDate)).toLocaleDateString("ru", options)}}</td>
                   <td class="deleteRow">
                     <input type="button" class="btn btn-secondary" title="Удалить" value="—"  name="deleteIncome"
                            @click="deleteExpense(item, $event)" />
@@ -96,6 +96,11 @@ export default {
   data () {
     return {
       user: {},
+      options: {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      },
       username: localStorage.getItem('username'),
       currentIncome: Income,
       currentExpense: Expense,
@@ -107,6 +112,7 @@ export default {
     addIncome: function () {
       this.$validator.validate('incomeSum').then((success) => {
         if (success) {
+          this.currentIncome.amount = parseInt(this.currentIncome.amount, 10)
           this.user.incomes.push(this.currentIncome)
           this.user.update()
           this.currentIncome = {
@@ -119,10 +125,12 @@ export default {
     addExpense: function () {
       this.$validator.validate('expenseSum').then((success) => {
         if (success) {
-          this.user.expense.push(this.currentExpense)
+          this.currentExpense.amount = parseInt(this.currentExpense.amount, 10)
+          console.log(this.currentExpense)
+          this.user.expenses.push(this.currentExpense)
           this.user.update()
           this.currentExpense = {
-            sum: '',
+            amount: '',
             reason: '',
             endDate: Date.now()
           }
@@ -143,6 +151,7 @@ export default {
     user.username = localStorage.getItem('username')
     user.fetch().then(x => {
       this.user = user
+      console.log(user)
     })
   }
 }
