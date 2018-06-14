@@ -1,8 +1,8 @@
 <template>
   <div class="d-flex flex-column justify-content-center align-items-center">
-    <div class="text-center">
+    <div class="text-center col-lg-10 col-md-10 ">
       <h3>{{user.username}}</h3><br>
-      <div class="row">
+      <div class="row collumnTable">
         <div class="leftColumn">Доходы
           <table cellspacing="0" class="my-table">
             <tr>
@@ -114,7 +114,10 @@ export default {
       this.$validator.validate('incomeSum').then((success) => {
         if (success) {
           this.currentIncome.amount = parseInt(this.currentIncome.amount, 10)
-          if (this.user.incomes == null) this.user.incomes = []
+          if (this.user.incomes == null) {
+            console.log(this.user.incomes)
+            this.user.incomes = []
+          }
           this.user.incomes.push(this.currentIncome)
           this.user.update()
           this.currentIncome = {
@@ -165,6 +168,10 @@ export default {
 </script>
 
 <style>
+  .collumnTable {
+    flex-wrap: wrap;
+  }
+
   .my-table {
     width: 100%; /* Ширина всей таблицы */
   }
