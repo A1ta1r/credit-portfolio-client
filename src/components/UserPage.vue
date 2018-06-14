@@ -53,7 +53,7 @@
               <td>₽{{ item.amount }}.00</td>
               <td>{{ item.reason }}</td>
               <td class="deleteRow">
-                <input type="button" name="deleteIncome" class="btn btn-secondary" title="Удалить" value="—"
+                <input type="button" name="deleteIncome" class="btn btn-secondary btn-danger btn-sm" title="Удалить" value="—"
                        @click="deleteIncome(item, $event)"/>
               </td>
             </tr>
@@ -66,7 +66,7 @@
               <td>{{ item.reason }}</td>
               <td>До {{ (new Date(item.endDate)).toLocaleDateString("ru", options)}}</td>
               <td class="deleteRow">
-                <input type="button" class="btn btn-secondary" title="Удалить" value="—" name="deleteIncome"
+                <input type="button" class="btn btn-secondary btn-sm btn-danger" title="Удалить" value="—" name="deleteIncome"
                        @click="deleteExpense(item, $event)"/>
               </td>
             </tr>
@@ -79,8 +79,6 @@
 
 <script>
 import User from '../models/user'
-import Income from '../models/income'
-import Expense from '../models/expense'
 import Datepicker from 'vuejs-datepicker'
 import {ru} from 'vuejs-datepicker/dist/locale'
 
