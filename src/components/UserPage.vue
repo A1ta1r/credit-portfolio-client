@@ -8,7 +8,7 @@
             <tr>
               <td class="sumColumn" :class="{'has-danger':errors.first('incomeSum') != null}">
                 <input class="form-control" name="incomeSum" v-model="currentIncome.amount" data-vv-as="сумма"
-                       v-validate="{ required: true, numeric: true, min_value:1 }" placeholder="сумма" type="text"/>
+                       v-validate="{ required: true, decimal: true, min_value:1 }" placeholder="сумма" type="text"/>
               </td>
               <td class="reasonColumn">
                 <input class="form-control" name="sourceIncome" v-model="currentIncome.reason"
@@ -26,7 +26,7 @@
             <tr>
               <td class="sumColumn" :class="{'has-danger':errors.first('expenseSum') != null}">
                 <input class="form-control" v-model="currentExpense.amount" data-vv-as="сумма" placeholder="сумма"
-                       name="expenseSum" v-validate="{ required:true, numeric:true, min_value:1 }" type="text"/>
+                       name="expenseSum" v-validate="{ required:true, decimal:true, min_value:1 }" type="text"/>
               </td>
               <td class="reasonColumn">
                 <input class="form-control" v-model="currentExpense.reason" placeholder="источник" type="text"/>
@@ -48,9 +48,18 @@
       <hr/>
       <div class="row">
         <div class="leftColumn">
+          <input readonly class="form-control" type="text" v-model="totalIncome"/>
+        </div>
+        <div class="rightColumn">
+          <input readonly class="form-control" type="text" v-model="totalExpense"/>
+      </div>
+      </div>
+      <hr/>
+      <div class="row">
+        <div class="leftColumn">
           <table class="myFavoriteTable table table-bordered">
             <tr v-bind:key="item" v-for="item in user.incomes" class="form-control-static">
-              <td>₽{{ item.amount }}.00</td>
+              <td>₽{{ item.amount }}</td>
               <td>{{ item.reason }}</td>
               <td class="deleteRow">
                 <input type="button" name="deleteIncome" class="btn btn-secondary btn-danger btn-sm" title="Удалить" value="—"
@@ -62,7 +71,7 @@
         <td class="rightColumn">
           <table class="table table-bordered">
             <tr v-bind:key="item" v-for="item in user.expenses" class="form-control-static">
-              <td>₽{{ item.amount }}.00</td>
+              <td>₽{{ item.amount }}</td>
               <td>{{ item.reason }}</td>
               <td>До {{ (new Date(item.endDate)).toLocaleDateString("ru", options)}}</td>
               <td class="deleteRow">
@@ -107,11 +116,27 @@ export default {
       datepickerInput: 'form-control'
     }
   },
+  computed: {
+    totalIncome: function () {
+      let sum = 0
+      for (let i = 0; i < this.user.incomes.length; i++) {
+        sum += this.user.incomes[i].amount
+      }
+      return 'Общие доходы : ₽ ' + sum
+    },
+    totalExpense: function () {
+      let sum = 0
+      for (let i = 0; i < this.user.expenses.length; i++) {
+        sum += this.user.expenses[i].amount
+      }
+      return 'Общие расходы : ₽ ' + sum
+    }
+  },
   methods: {
     addIncome: function () {
       this.$validator.validate('incomeSum').then((success) => {
         if (success) {
-          this.currentIncome.amount = parseInt(this.currentIncome.amount, 10)
+          this.currentIncome.amount = parseFloat(this.currentIncome.amount, 10)
           if (this.user.incomes == null) {
             console.log(this.user.incomes)
             this.user.incomes = []
@@ -128,7 +153,7 @@ export default {
     addExpense: function () {
       this.$validator.validate('expenseSum').then((success) => {
         if (success) {
-          this.currentExpense.amount = parseInt(this.currentExpense.amount, 10)
+          this.currentExpense.amount = parseFloat(this.currentExpense.amount, 10)
           if (this.user.expenses == null) this.user.expenses = []
           this.user.expenses.push(this.currentExpense)
           this.user.update()
