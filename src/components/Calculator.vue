@@ -59,8 +59,6 @@
     <div class="form-control-static">
       <input type="submit" class="btn btn-primary" title="Рассчитать" value="Рассчитать" v-on:click="calculation"/>
     </div>
-    <h5 v-if="paymentPlan.totalPaymentAmount">
-      Итоговая сумма платежей:
     <div class="form-control-static" v-if="paymentPlan.totalPaymentAmount && checkLoggged" >
       <input type="submit" class="btn btn-info" title="Добавить себе немного кредитов" value="Добавить себе немного кредитов"/>
     </div>

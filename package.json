@@ -19,6 +19,8 @@
     "quasar-calendar": "^0.3.0",
     "vee-validate": "^2.1.0-beta.1",
     "vue": "^2.5.2",
+    "vue-js-toggle-button": "^1.2.3",
+    "vue-libs-simple-toggle": "^1.0.6",
     "vue-mc": "^0.2.4",
     "vue-numeric": "^2.3.0",
     "vue-router": "^3.0.1",
