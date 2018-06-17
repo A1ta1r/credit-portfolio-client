@@ -61,6 +61,10 @@
     </div>
     <h5 v-if="paymentPlan.totalPaymentAmount">
       Итоговая сумма платежей:
+    <div class="form-control-static" v-if="paymentPlan.totalPaymentAmount && checkLoggged" >
+      <input type="submit" class="btn btn-info" title="Добавить себе немного кредитов" value="Добавить себе немного кредитов"/>
+    </div>
+    <h5 v-if="paymentPlan.totalPaymentAmount" class="form-control-static">Итоговая сумма платежей:
       <vue-numeric currency="₽" separator="space" v-bind:value="paymentPlan.totalPaymentAmount" :read-only="true"
                    :precision="2" decimal-separator="."></vue-numeric>
     </h5>
@@ -84,6 +88,7 @@ import PaymentPlan from '../models/paymentPlan'
 import Calculator from '../services/calculator'
 import Datepicker from 'vuejs-datepicker'
 import {ru} from 'vuejs-datepicker/dist/locale'
+import {checkLoggedIn} from '../services/auth'
 
 export default {
   name: 'calculator',
@@ -154,6 +159,9 @@ export default {
       let start = (this.pagination.page - 1) * this.pagination.limit
       let end = start + this.pagination.limit
       return this.paymentPlan.paymentList.slice(start, end)
+    },
+    checkLoggged: function () {
+      return checkLoggedIn()
     },
     getPaymentsAmount: function () {
       if (this.paymentPlan.paymentList[0].paymentAmount === this.paymentPlan.paymentList[1].paymentAmount) {
