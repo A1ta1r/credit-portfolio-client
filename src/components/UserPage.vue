@@ -120,7 +120,7 @@ export default {
       user: {},
       options: {
         year: 'numeric',
-        month: 'long',
+        month: 'numeric',
         day: 'numeric'
       },
       username: localStorage.getItem('username'),

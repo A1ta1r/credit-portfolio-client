@@ -13,9 +13,9 @@ export default new Router({
     {
       title: 'Кредитный портфель',
       path: '/',
-      name: 'HelloWorld',
-      meta: {title: 'Кредитный портфель'},
-      component: HelloWorld
+      name: 'User',
+      meta: {title: 'Личный кабинет', requiresAuth: true},
+      component: UserPage
     },
     {
       title: 'Регистрация',
