@@ -8,11 +8,19 @@
         </th>
       </tr>
       </thead>
-      <tr v-bind:key="item.paymentDate" v-for="item in payments" class="form-control-static">
+      <tr v-bind:key="item.paymentDate" v-for="(item, index) in payments" class="form-control-static">
         <td>{{ (new Date(item.paymentDate)).toLocaleDateString("ru", options) }}</td>
         <td>
           <vue-numeric currency="₽" separator="space" v-bind:value="item.paymentAmount" :read-only="true"
                        :precision="2" decimal-separator="."></vue-numeric>
+        </td>
+        <td v-if="myPaymentPlan">
+          <vue-numeric currency="₽" separator="space" v-bind:value="item.paymentPlan.totalPaymentAmount - countRest(index, page)" :read-only="true"
+                       :precision="2"></vue-numeric>
+        </td>
+        <td v-if="!myPaymentPlan">
+          <vue-numeric currency="₽" separator="space" v-bind:value="item.paymentPlan.totalPaymentAmount - item.paymentAmount * (index + 1 + ((page - 1) * 12))" :read-only="true"
+                       :precision="2"></vue-numeric>
         </td>
       </tr>
     </table>
@@ -29,11 +37,23 @@ export default {
         month: 'long',
         day: 'numeric'
       },
-      columnHeads: ['Дата платежа', 'Сумма платежа']
+      columnHeads: ['Дата платежа', 'Сумма платежа', 'Остаток задолженности']
     }
   },
   props: {
-    payments: Array
+    payments: Array,
+    page: Number,
+    myPaymentPlan: Array
+  },
+  methods: {
+    countRest: function (currNumb, currPage) {
+      let result = 0
+      let index = (currPage - 1) * 12 + currNumb + 1
+      for (let i = 0; i < index; i++) {
+        result = result + this.myPaymentPlan[i]
+      }
+      return result
+    }
   }
 }
 </script>
