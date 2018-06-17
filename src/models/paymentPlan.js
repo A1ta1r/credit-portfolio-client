@@ -18,6 +18,7 @@ export default class PaymentPlan {
     this.numberOfMonths = 0
     this.interestRate = 0
     this.totalPaymentAmount = 0
+    this.paymentAmount = 0
     this.paymentList = []
     this.startDate = new Date(Date.now())
   }
