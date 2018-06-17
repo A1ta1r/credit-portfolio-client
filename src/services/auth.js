@@ -1,34 +1,41 @@
 import {HTTP} from '../main'
 
 // Метод делает запрос к API для получения JWT,
-// затем производит запись JWT и username в localStorage для
-// использования в других частях приложения
+// затем производит запись JWT и username в localStorage
 export function signIn (username, password) {
   return HTTP.post('/signin', {
     username: username,
     password: password
   }).then((response) => {
-    localStorage.setItem('token', 'Bearer ' + response.data.token)
-    localStorage.setItem('username', username)
-    return true
-  }).catch((error) => {
-    console.log(error.message)
-    throw error
+    if (response.status === 200) {
+      localStorage.setItem('token', 'Bearer ' + response.data.token)
+      localStorage.setItem('username', username)
+      return true
+    }
+    return false
   })
 }
 
 // Метод делает запрос к API для обновления текущего JWT,
-// затем производит запись JWT в localStorage для
-// использования в других частях приложения
+// затем производит запись JWT в localStorage
 export function refreshToken () {
-  HTTP.get('/refreshToken', {
+  return HTTP.get('/refreshToken', {
     headers: {
       Authorization: localStorage.getItem('token')
     }
   }).then((response) => {
-    localStorage.setItem('token', 'Bearer ' + response.data.token)
-    console.log(HTTP.headers)
-  }).catch((error) => {
-    console.log(error.message)
+    if (response.status === 200) {
+      localStorage.setItem('token', 'Bearer ' + response.data.token)
+      return true
+    } else {
+      this.localStorage.removeItem('token')
+      this.localStorage.removeItem('username')
+      return false
+    }
   })
+}
+
+// Метод проверяет наличие JWT у пользователя
+export function checkLoggedIn () {
+  return localStorage.getItem('username') !== null && localStorage.getItem('token') !== null
 }

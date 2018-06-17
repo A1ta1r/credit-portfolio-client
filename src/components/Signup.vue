@@ -58,10 +58,13 @@ export default {
             this.settings.password,
             this.settings.email
           )
-          user.save().then(() => {
-            signIn(user.username, user.password).then(() => {
-              this.$router.push('/user/profile')
-            })
+          user.save().then((status) => {
+            console.log(status)
+            if (status === 201) {
+              signIn(user.username, user.password).then(() => {
+                this.$router.push('/user/profile')
+              })
+            }
           })
         }
       }).catch((error) => {

@@ -35,7 +35,7 @@ export default new Router({
       title: 'Личный кабинет',
       path: '/user/profile',
       name: 'User',
-      meta: {title: 'Личный кабинет'},
+      meta: {title: 'Личный кабинет', requiresAuth: true},
       component: UserPage
     },
     {
@@ -49,7 +49,7 @@ export default new Router({
       title: 'Выход',
       path: '/signout',
       name: 'Signout',
-      meta: {title: 'Выход'}
+      meta: {title: 'Выход', requiresAuth: true}
     }
   ]
 })

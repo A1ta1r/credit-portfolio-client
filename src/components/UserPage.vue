@@ -139,18 +139,24 @@ export default {
   },
   computed: {
     totalIncome: function () {
+      if (!this.user.incomes) {
+        return 0
+      }
       let sum = 0
       for (let i = 0; i < this.user.incomes.length; i++) {
         sum += this.user.incomes[i].amount
       }
-      return 'Общие доходы : ₽ ' + sum
+      return sum
     },
     totalExpense: function () {
+      if (!this.user.expenses) {
+        return 0
+      }
       let sum = 0
-      for (let i = 0; i < this.user.expenses.length; i++) {
+      for (let i = 0; this.user !== null && i < this.user.expenses.length; i++) {
         sum += this.user.expenses[i].amount
       }
-      return 'Общие расходы : ₽ ' + sum
+      return sum
     }
   },
   methods: {
@@ -159,11 +165,14 @@ export default {
         if (success) {
           this.currentIncome.amount = parseFloat(this.currentIncome.amount, 10)
           if (this.user.incomes == null) {
-            console.log(this.user.incomes)
             this.user.incomes = []
           }
           this.user.incomes.push(this.currentIncome)
           this.user.update()
+          this.currentIncome = {
+            amount: this.amount,
+            reason: this.reason
+          }
         }
       })
     },
@@ -174,6 +183,11 @@ export default {
           if (this.user.expenses == null) this.user.expenses = []
           this.user.expenses.push(this.currentExpense)
           this.user.update()
+          this.currentExpense = {
+            amount: this.amount,
+            reason: this.reason,
+            endDate: new Date(Date.now())
+          }
         }
       })
     },
@@ -191,11 +205,10 @@ export default {
   created: function () {
     let user = new User('', '', '')
     user.username = localStorage.getItem('username')
-    user.fetch().then(x => {
+    user.fetch().then(() => {
       if (user.expenses === null) user.expenses = []
       if (user.incomes === null) user.incomes = []
       this.user = user
-      console.log(user)
     })
   }
 }
