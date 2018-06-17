@@ -42,55 +42,10 @@
             </datepicker>
           </li>
           <li id="add" class="">
-            <input class="btn btn-secondary flex-item" v-on:click="addBtnClick" title="Добавить" value="+" type="submit"/>
+            <input class="btn btn-success flex-item" v-on:click="addBtnClick" title="Добавить" value="+" type="submit"/>
           </li>
-          <!--<table cellspacing="0" class="">-->
-            <!--<tr>-->
-              <!--<td class="sumColumn" :class="{'has-danger':errors.first('incomeSum') != null}">-->
-                <!--<vue-numeric currency="₽" separator="space" class="form-control" v-model="currentIncome.amount"-->
-                             <!--data-vv-as="сумма" placeholder="сумма"-->
-                             <!--name="incomeSum" v-validate="{ min_value:0.01, required:true, decimal:true }"-->
-                             <!--:precision="2" value="" decimal-separator="."></vue-numeric>-->
-              <!--</td>-->
-              <!--<td class="reasonColumn">-->
-
-              <!--</td>-->
-              <!--<td class="dateColumn">-->
-                <!--<datepicker :input-class="datepickerInput" :language="datepickerLocale"-->
-                            <!--v-model="currentExpense.endDate">-->
-                <!--</datepicker>-->
-              <!--</td>-->
-              <!--<td>-->
-                <!---->
-              <!--</td>-->
-            <!--</tr>-->
-          <!--</table>-->
         </ul>
         <span class="">{{ errors.first('incomeSum') }}</span>
-        <!--<td class="rightColumn">Расходы-->
-          <!--<table cellspacing="0" class="my-table">-->
-            <!--<tr>-->
-              <!--<td class="sumColumn" :class="{'has-danger':errors.first('expenseSum') != null}">-->
-                <!--<vue-numeric currency="₽" separator="space" class="form-control" v-model="currentExpense.amount"-->
-                             <!--data-vv-as="сумма" placeholder="сумма"-->
-                             <!--name="expenseSum" v-validate="{min_value:0.01, required:true, decimal:true  }"-->
-                             <!--:precision="2" value="" decimal-separator="."></vue-numeric>-->
-              <!--</td>-->
-              <!--<td class="reasonColumn">-->
-                <!--<input class="form-control" v-model="currentExpense.reason" placeholder="источник" type="text"/>-->
-              <!--</td>-->
-              <!--<td class="dateColumn">-->
-                <!--<datepicker :input-class="datepickerInput" :language="datepickerLocale"-->
-                            <!--v-model="currentExpense.endDate">-->
-                <!--</datepicker>-->
-              <!--</td>-->
-              <!--<td>-->
-                <!--<input class="btn btn-secondary" v-on:click="addExpense" title="Добавить" value="+" type="submit"/>-->
-              <!--</td>-->
-            <!--</tr>-->
-          <!--</table>-->
-          <!--<span>{{errors.first('expenseSum')}}</span>-->
-        <!--</td>-->
       </div>
       <hr/>
       <!--сумма доходов и расходов-->
@@ -138,7 +93,7 @@
                              :precision="2" decimal-separator="."></vue-numeric>
               </td>
               <td>{{ item.reason }}</td>
-              <td>До {{ (new Date(item.endDate)).toLocaleDateString("ru", options)}}</td>
+              <td>До {{ (new Date(item.startDate)).toLocaleDateString("ru", options)}}</td>
               <td class="deleteRow">
                 <input type="button" class="btn btn-secondary btn-sm btn-danger" title="Удалить" value="—"
                        name="deleteIncome"
@@ -277,7 +232,7 @@ export default {
 
     -webkit-flex-flow: row wrap;
     justify-content: space-evenly;
-    align-items: end;
+    align-items: flex-end;
   }
 
   .smalInt {
