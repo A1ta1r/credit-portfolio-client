@@ -38,8 +38,7 @@ router.beforeEach((to, from, next) => {
 })
 
 export const HTTP = axios.create({
-  // baseURL: 'https://protected-badlands-94104.herokuapp.com/'
-  baseURL: 'http://localhost:8000'
+  baseURL: 'https://protected-badlands-94104.herokuapp.com/'
 })
 
 /* eslint-disable no-new */

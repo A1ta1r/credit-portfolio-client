@@ -65,8 +65,8 @@
 
     <div class="form-control-static">
       <input type="submit" class="btn btn-primary" title="Рассчитать" value="Рассчитать" v-on:click="calculation"/>
-      <input type="submit" @click="addPlan" v-if="checkLogged" :class="{'btn-success':paymentPlan.totalPaymentAmount}"
-             :disabled="planToSave === {}" class="btn" title="Добавить себе немного кредитов"
+      <input type="submit" @click="addPlan" v-if="logged" :class="{'btn-success':paymentPlan.totalPaymentAmount}"
+             :disabled="!paymentPlan.totalPaymentAmount" class="btn" title="Добавить себе немного кредитов"
              value="Добавить себе немного кредитов"/>
     </div>
     <h5 v-if="paymentPlan.totalPaymentAmount" class="form-control-static">Итоговая сумма платежей:
@@ -123,7 +123,6 @@ export default {
     }
   },
   methods: {
-    checkLogged: () => checkLoggedIn(),
     calculation: function () {
       let paymAmnt = this.paymentPlan.paymentAmount
       let numbMnth = this.paymentPlan.numberOfMonths
@@ -175,6 +174,7 @@ export default {
     }
   },
   computed: {
+    logged: function () { return checkLoggedIn() },
     currentPayments: function () {
       let start = (this.pagination.page - 1) * this.pagination.limit
       let end = start + this.pagination.limit
