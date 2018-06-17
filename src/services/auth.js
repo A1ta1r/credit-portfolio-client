@@ -1,6 +1,6 @@
 import {HTTP} from '../main'
 
-// Метод делает запрос к API для получения JWT,
+// Функция делает запрос к API для получения JWT,
 // затем производит запись JWT и username в localStorage
 export function signIn (username, password) {
   return HTTP.post('/signin', {
@@ -16,7 +16,7 @@ export function signIn (username, password) {
   })
 }
 
-// Метод делает запрос к API для обновления текущего JWT,
+// Функция делает запрос к API для обновления текущего JWT,
 // затем производит запись JWT в localStorage
 export function refreshToken () {
   return HTTP.get('/refreshToken', {
@@ -35,7 +35,14 @@ export function refreshToken () {
   })
 }
 
-// Метод проверяет наличие JWT у пользователя
+// Функция проверяет наличие JWT у пользователя
 export function checkLoggedIn () {
   return localStorage.getItem('username') !== null && localStorage.getItem('token') !== null
+}
+
+// Функция удаляет учетные данные пользователя
+// из его браузера
+export function clearCredentials () {
+  localStorage.removeItem('username')
+  localStorage.removeItem('token')
 }

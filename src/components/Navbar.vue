@@ -2,7 +2,7 @@
   <nav class="navbar navbar-toggleable-sm navbar-light bg-success navbar-inverse">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <router-link :to="main" class="nav-link" active-class="active">{{ main.title }}</router-link>
+        <label class="nav-link active">Кредитный калькулятор</label>
       </li>
       <li class="nav-item">
         <router-link v-if="!isLoggedIn" :to="signup" class="nav-link" active-class="active">{{ signup.title }}</router-link>
@@ -11,13 +11,16 @@
         <router-link v-if="isLoggedIn" :to="userpage" class="nav-link" active-class="active">{{ userpage.title }}</router-link>
       </li>
       <li class="nav-item">
-        <router-link :to="calculator" class="nav-link" active-class="active">{{ calculator.title }}</router-link>
-      </li>
-      <li class="nav-item">
-        <router-link :to="signout" v-if="isLoggedIn" class="nav-link" v-bind:onclick="clearCredentials">{{ signout.title }}</router-link>
+        <router-link :to="signout" v-if="isLoggedIn" class="nav-link">{{ signout.title }}</router-link>
       </li>
       <li class="nav-item">
         <router-link v-if="!isLoggedIn" :to="signin" class="nav-link" active-class="active">{{ signin.title }}</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link :to="calculator" class="nav-link" active-class="active">{{ calculator.title }}</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link v-if="isLoggedIn" :to="agenda" class="nav-link" active-class="active">{{ agenda.title }}</router-link>
       </li>
     </ul>
   </nav>
@@ -25,7 +28,7 @@
 
 <script>
 
-import {checkLoggedIn} from '../services/auth'
+import {checkLoggedIn, clearCredentials} from '../services/auth'
 
 export default {
   name: 'Navbar',
@@ -37,6 +40,7 @@ export default {
       signup: '',
       signout: '',
       userpage: '',
+      agenda: '',
       isLoggedIn: checkLoggedIn()
     }
   },
@@ -51,26 +55,20 @@ export default {
         routes.push(route)
       }
     }
-    this.main = routes[0]
-    this.signup = routes[1]
-    this.signin = routes[2]
-    this.userpage = routes[3]
-    this.calculator = routes[4]
+    // this.main = routes[0]
+    this.signup = routes[0]
+    this.signin = routes[1]
+    this.userpage = routes[2]
+    this.calculator = routes[3]
+    this.agenda = routes[4]
     this.signout = routes[5]
     this.isLoggedIn = checkLoggedIn()
-  },
-  methods: {
-    clearCredentials: function () {
-      console.log('hello')
-      localStorage.removeItem('username')
-      localStorage.removeItem('token')
-    }
   },
   watch: {
     '$route' (to) {
       this.isLoggedIn = checkLoggedIn()
       if (to.name === this.signout.name) {
-        this.clearCredentials()
+        clearCredentials()
         this.$router.push('/signin')
       }
     }

@@ -8,7 +8,7 @@ import VeeValidate from 'vee-validate'
 import ru from 'vee-validate/dist/locale/ru'
 import axios from 'axios'
 import VueNumeric from 'vue-numeric'
-import {refreshToken} from './services/auth'
+import {clearCredentials, refreshToken} from './services/auth'
 
 VeeValidate.Validator.localize('ru', ru)
 
@@ -24,9 +24,11 @@ router.beforeEach((to, from, next) => {
         document.title = to.meta.title !== undefined ? to.meta.title : 'Кредитный портфель'
         next()
       } else {
+        clearCredentials()
         router.push('/signin')
       }
     }).catch(() => {
+      clearCredentials()
       router.push('/signin')
     })
   } else {

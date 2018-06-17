@@ -4,18 +4,19 @@ import Calculator from '@/components/Calculator'
 import Signup from '@/components/Signup'
 import Signin from '@/components/Signin'
 import UserPage from '@/components/UserPage'
+import Agenda from '@/components/Agenda'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
-    {
-      title: 'Кредитный портфель',
-      path: '/',
-      name: 'User',
-      meta: {title: 'Личный кабинет', requiresAuth: true},
-      component: UserPage
-    },
+    // {
+    //   title: 'Кредитный портфель',
+    //   path: '/',
+    //   name: 'main',
+    //   meta: {title: 'Личный кабинет', requiresAuth: true},
+    //   component: UserPage
+    // },
     {
       title: 'Регистрация',
       path: '/signup',
@@ -43,6 +44,13 @@ export default new Router({
       name: 'Calculator',
       meta: {title: 'Калькулятор'},
       component: Calculator
+    },
+    {
+      title: 'События',
+      path: '/user/agenda',
+      name: 'Agenda',
+      component: Agenda,
+      meta: {title: 'События', requiresAuth: true}
     },
     {
       title: 'Выход',

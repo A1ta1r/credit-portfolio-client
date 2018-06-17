@@ -3,8 +3,8 @@
 
     <div style="margin-bottom: 0" class="form-group" v-bind:class="{ 'has-danger': errorsCust.sum.length }">
       <label>Сумма кредита, ₽</label>
-      <vue-numeric autofocus currency="₽" separator="space" class="form-control" v-model="paymentPlan.paymentAmount"
-                   data-vv-as="сумма" placeholder="сумма"
+      <vue-numeric currency="₽" separator="space" class="form-control" v-model="paymentPlan.paymentAmount"
+                   placeholder="сумма"
                    id="sum" title="Сумма кредита" :min="1"
                    :precision="2" :value="paymentPlan.paymentAmount" decimal-separator="."></vue-numeric>
     </div>
@@ -21,8 +21,10 @@
     <div style="margin-bottom: 0; margin-top: 10pt" class="form-group"
          v-bind:class="{ 'has-danger': errorsCust.rate.length }">
       <label>Процент в год, %</label>
-      <input class="form-control" type="number" step="0.01" :min="0" id="rate" v-model="paymentPlan.interestRate"
-             title="Процент"/>
+      <vue-numeric currency="%" separator="space" class="form-control" v-model="paymentPlan.interestRate"
+                   placeholder="процент в год"
+                   id="rate" title="Процент" :min="0.01"
+                   :precision="2" :value="paymentPlan.interestRate" decimal-separator="."></vue-numeric>
     </div>
     <span v-if="errorsCust.rate.length" v-bind:key="error" v-for="error in errorsCust.rate">{{error}}</span>
 
@@ -61,7 +63,8 @@
       <vue-numeric currency="₽" separator="space" v-bind:value="paymentPlan.totalPaymentAmount" :read-only="true"
                    :precision="2" decimal-separator="."></vue-numeric>
     </h5>
-    <PaymentsTable v-if="paymentPlan.totalPaymentAmount" :payments="currentPayments" :page="this.pagination.page" :myPaymentPlan="getPaymentsAmount"
+    <PaymentsTable v-if="paymentPlan.totalPaymentAmount" :payments="currentPayments" :page="this.pagination.page"
+                   :myPaymentPlan="getPaymentsAmount"
                    :total="paymentPlan.totalPaymentAmount"></PaymentsTable>
     <paginator v-if="paymentPlan.totalPaymentAmount" v-model="pagination" :limit="pagination.limit"
                :length="paymentPlan.paymentList.length"></paginator>
@@ -83,7 +86,7 @@ export default {
     return {
       even: PaymentPlan.LoanTypes.Even,
       diff: PaymentPlan.LoanTypes.Differentiated,
-      paymentPlan: new PaymentPlan({paymentAmount: 1000000, interestRate: 12.4, numberOfMonths: 24}),
+      paymentPlan: new PaymentPlan(),
       startDate: Date.now(),
       datepickerLocale: ru,
       datepickerInput: 'form-control',
@@ -155,6 +158,11 @@ export default {
         return result
       }
     }
+  },
+  mounted: function () {
+    this.paymentPlan.paymentAmount = 300000
+    this.paymentPlan.interestRate = 12
+    this.paymentPlan.numberOfMonths = 24
   }
 }
 </script>

@@ -16,11 +16,11 @@
         </td>
         <td v-if="myPaymentPlan">
           <vue-numeric currency="₽" separator="space" v-bind:value="item.paymentPlan.totalPaymentAmount - countRest(index, page)" :read-only="true"
-                       :precision="2"></vue-numeric>
+                       :precision="2" decimal-separator="."></vue-numeric>
         </td>
         <td v-if="!myPaymentPlan">
           <vue-numeric currency="₽" separator="space" v-bind:value="item.paymentPlan.totalPaymentAmount - item.paymentAmount * (index + 1 + ((page - 1) * 12))" :read-only="true"
-                       :precision="2"></vue-numeric>
+                       :precision="2" decimal-separator="."></vue-numeric>
         </td>
       </tr>
     </table>
