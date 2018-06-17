@@ -11,7 +11,6 @@ export default class PaymentPlan {
   paymentList
   startDate
   totalPaymentAmount
-  errorsCust
 
   constructor () {
     this.title = 'Новый кредит'
@@ -21,10 +20,5 @@ export default class PaymentPlan {
     this.totalPaymentAmount = 0
     this.paymentList = []
     this.startDate = new Date(Date.now())
-    this.errorsCust = {
-      amount: [],
-      month: [],
-      rate: []
-    }
   }
 }

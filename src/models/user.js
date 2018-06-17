@@ -27,7 +27,7 @@ export default class User {
     }).then((response) => {
       this.email = response.data.email
       this.id = response.data.id
-      this.role = response.data.roleId
+      this.role = response.data.role
       this.incomes = response.data.incomes
       this.expenses = response.data.expenses
       this.paymentPlans = response.data.paymentPlans

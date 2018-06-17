@@ -165,6 +165,9 @@ export default {
     },
     addPlan: function () {
       if (this.user.paymentPlans == null) this.user.paymentPlans = []
+      this.paymentPlan.interestRate = parseFloat(this.paymentPlan.interestRate)
+      this.paymentPlan.numberOfMonths = parseFloat(this.paymentPlan.numberOfMonths)
+      this.paymentPlan.paymentAmount = parseFloat(this.paymentPlan.paymentAmount)
       this.user.paymentPlans.push(this.planToSave)
       this.user.update()
 
@@ -178,7 +181,7 @@ export default {
       return this.paymentPlan.paymentList.slice(start, end)
     },
     getPaymentsAmount: function () {
-      if (this.paymentPlan.paymentList[0].paymentAmount === this.paymentPlan.paymentList[1].paymentAmount) {
+      if (this.paymentPlan.paymentType === this.even) {
         return undefined
       } else {
         let result = []
@@ -190,14 +193,14 @@ export default {
     }
   },
   created: function () {
-    if (checkLoggedIn()) {
-      let user = new User('', '', '')
-      user.username = localStorage.getItem('username')
-      user.fetch().then(() => {
-        this.user = user
-        console.log(this.user)
-      })
-    }
+    let user = new User('', '', '')
+    user.username = localStorage.getItem('username')
+    user.fetch().then(() => {
+      if (user.expenses === null) user.expenses = []
+      if (user.incomes === null) user.incomes = []
+      if (user.paymentPlans === null) user.paymentPlans = []
+      this.user = user
+    })
   },
   mounted: function () {
     this.paymentPlan.paymentAmount = 300000
