@@ -10,7 +10,7 @@
                 <vue-numeric currency="₽" separator="space" class="form-control" v-model="currentIncome.amount"
                              data-vv-as="сумма" placeholder="сумма"
                              name="incomeSum" v-validate="{ min_value:0.01, required:true, decimal:true }"
-                             :precision="2" value=""></vue-numeric>
+                             :precision="2" value="" decimal-separator="."></vue-numeric>
               </td>
               <td class="reasonColumn">
                 <input class="form-control" name="sourceIncome" v-model="currentIncome.reason"
@@ -30,7 +30,7 @@
                 <vue-numeric currency="₽" separator="space" class="form-control" v-model="currentExpense.amount"
                              data-vv-as="сумма" placeholder="сумма"
                              name="expenseSum" v-validate="{min_value:0.01, required:true, decimal:true  }"
-                             :precision="2" value=""></vue-numeric>
+                             :precision="2" value="" decimal-separator="."></vue-numeric>
               </td>
               <td class="reasonColumn">
                 <input class="form-control" v-model="currentExpense.reason" placeholder="источник" type="text"/>
@@ -55,14 +55,14 @@
           <label class="form-control form-control-success">
             Доходы:
             <vue-numeric currency="₽" separator="space" v-bind:value="totalIncome" :read-only="true"
-                         :precision="2"></vue-numeric>
+                         :precision="2" decimal-separator="."></vue-numeric>
           </label>
         </div>
         <div class="rightColumn">
           <label class="form-control form-control-success">
             Расходы:
             <vue-numeric currency="₽" separator="space" v-bind:value="totalExpense" :read-only="true"
-                         :precision="2"></vue-numeric>
+                         :precision="2" decimal-separator="."></vue-numeric>
           </label>
 
         </div>
@@ -74,7 +74,7 @@
             <tr v-bind:key="item.id" v-for="item in user.incomes" class="form-control-static">
               <td>
                 <vue-numeric currency="₽" separator="space" v-bind:value="item.amount" :read-only="true"
-                             :precision="2"></vue-numeric>
+                             :precision="2" decimal-separator="."></vue-numeric>
               </td>
               <td>{{ item.reason }}</td>
               <td class="deleteRow">
@@ -90,7 +90,7 @@
             <tr v-bind:key="item.id" v-for="item in user.expenses" class="form-control-static">
               <td>
                 <vue-numeric currency="₽" separator="space" v-bind:value="item.amount" :read-only="true"
-                             :precision="2"></vue-numeric>
+                             :precision="2" decimal-separator="."></vue-numeric>
               </td>
               <td>{{ item.reason }}</td>
               <td>До {{ (new Date(item.endDate)).toLocaleDateString("ru", options)}}</td>
@@ -131,7 +131,7 @@ export default {
       currentExpense: {
         amount: '',
         reason: '',
-        endDate: Date.now()
+        endDate: new Date(Date.now())
       },
       datepickerLocale: ru,
       datepickerInput: 'form-control'
@@ -164,10 +164,6 @@ export default {
           }
           this.user.incomes.push(this.currentIncome)
           this.user.update()
-          this.currentIncome = {
-            amount: '',
-            reason: ''
-          }
         }
       })
     },
@@ -178,11 +174,6 @@ export default {
           if (this.user.expenses == null) this.user.expenses = []
           this.user.expenses.push(this.currentExpense)
           this.user.update()
-          this.currentExpense = {
-            amount: '',
-            reason: '',
-            endDate: Date.now()
-          }
         }
       })
     },

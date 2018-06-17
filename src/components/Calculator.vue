@@ -2,9 +2,11 @@
   <div id="calculator" class="flex-container">
 
     <div style="margin-bottom: 0" class="form-group" v-bind:class="{ 'has-danger': errorsCust.sum.length }">
-      <label>Сумма кредита</label>
-      <input class="form-control" type="number" id="sum" min="1" v-model="paymentPlan.paymentAmount"
-             title="Сумма кредита"/>
+      <label>Сумма кредита, ₽</label>
+      <vue-numeric autofocus currency="₽" separator="space" class="form-control" v-model="paymentPlan.paymentAmount"
+                   data-vv-as="сумма" placeholder="сумма"
+                   id="sum" title="Сумма кредита" min="1"
+                   :precision="2" :value="paymentPlan.paymentAmount" decimal-separator="."></vue-numeric>
     </div>
     <span v-if="errorsCust.sum.length" v-bind:key="error" v-for="error in errorsCust.sum">{{error}}</span>
 
@@ -18,7 +20,7 @@
 
     <div style="margin-bottom: 0; margin-top: 10pt" class="form-group"
          v-bind:class="{ 'has-danger': errorsCust.rate.length }">
-      <label>Процент в год</label>
+      <label>Процент в год, %</label>
       <input class="form-control" type="number" step="0.01" min="0" id="rate" v-model="paymentPlan.interestRate"
              title="Процент"/>
     </div>
@@ -56,7 +58,9 @@
       <input type="submit" class="btn btn-primary" title="Рассчитать" value="Рассчитать" v-on:click="calculation"/>
     </div>
     <h5 v-if="paymentPlan.totalPaymentAmount" class="form-control-static">Итоговая сумма платежей:
-      {{paymentPlan.totalPaymentAmount.toFixed(2)}}</h5>
+      <vue-numeric currency="₽" separator="space" v-bind:value="paymentPlan.totalPaymentAmount" :read-only="true"
+                   :precision="2" decimal-separator="."></vue-numeric>
+    </h5>
     <PaymentsTable v-if="paymentPlan.totalPaymentAmount" :payments="currentPayments"
                    :total="paymentPlan.totalPaymentAmount"></PaymentsTable>
     <paginator v-if="paymentPlan.totalPaymentAmount" v-model="pagination" :limit="pagination.limit"
@@ -65,83 +69,83 @@
 </template>
 
 <script>
-import PaymentsTable from '../components/PaymentsTable'
-import Paginator from '../components/Paginator'
-import PaymentPlan from '../models/paymentPlan'
-import Calculator from '../services/calculator'
-import Datepicker from 'vuejs-datepicker'
-import {ru} from 'vuejs-datepicker/dist/locale'
+  import PaymentsTable from '../components/PaymentsTable'
+  import Paginator from '../components/Paginator'
+  import PaymentPlan from '../models/paymentPlan'
+  import Calculator from '../services/calculator'
+  import Datepicker from 'vuejs-datepicker'
+  import {ru} from 'vuejs-datepicker/dist/locale'
 
-export default {
-  name: 'calculator',
-  components: {Datepicker, PaymentsTable, Paginator},
-  data () {
-    return {
-      even: PaymentPlan.LoanTypes.Even,
-      diff: PaymentPlan.LoanTypes.Differentiated,
-      paymentPlan: new PaymentPlan({paymentAmount: 1000000, interestRate: 12.4, numberOfMonths: 24}),
-      startDate: Date.now(),
-      datepickerLocale: ru,
-      datepickerInput: 'form-control',
-      errorsCust: {
-        sum: [],
-        month: [],
-        rate: []
-      }, // Добавил массив ошибок, как в примере
-      pagination: {
-        page: 1,
-        limit: 12,
-        offset: 0
+  export default {
+    name: 'calculator',
+    components: {Datepicker, PaymentsTable, Paginator},
+    data() {
+      return {
+        even: PaymentPlan.LoanTypes.Even,
+        diff: PaymentPlan.LoanTypes.Differentiated,
+        paymentPlan: new PaymentPlan({paymentAmount: 1000000, interestRate: 12.4, numberOfMonths: 24}),
+        startDate: Date.now(),
+        datepickerLocale: ru,
+        datepickerInput: 'form-control',
+        errorsCust: {
+          sum: [],
+          month: [],
+          rate: []
+        }, // Добавил массив ошибок, как в примере
+        pagination: {
+          page: 1,
+          limit: 12,
+          offset: 0
+        }
       }
-    }
-  },
-  methods: {
-    calculation: function () {
-      let paymAmnt = this.paymentPlan.paymentAmount
-      let numbMnth = this.paymentPlan.numberOfMonths
-      let intrRate = this.paymentPlan.interestRate
-      this.errorsCust.sum = []
-      this.errorsCust.month = []
-      this.errorsCust.rate = []
-      if (paymAmnt && numbMnth && intrRate) {
-        if (!(paymAmnt <= 0 || paymAmnt > 999999999) && !(numbMnth <= 0 || numbMnth > 600) && !(intrRate <= 0 || intrRate > 2000)) {
-          if (!((numbMnth + '').indexOf('.') >= 0)) {
-            this.paymentPlan.startDate = new Date(this.startDate)
-            this.paymentPlan = Calculator.calculate(this.paymentPlan)
-            this.pagination = {
-              page: 1,
-              limit: 12,
-              offset: 0
+    },
+    methods: {
+      calculation: function () {
+        let paymAmnt = this.paymentPlan.paymentAmount
+        let numbMnth = this.paymentPlan.numberOfMonths
+        let intrRate = this.paymentPlan.interestRate
+        this.errorsCust.sum = []
+        this.errorsCust.month = []
+        this.errorsCust.rate = []
+        if (paymAmnt && numbMnth && intrRate) {
+          if (!(paymAmnt <= 0 || paymAmnt > 999999999) && !(numbMnth <= 0 || numbMnth > 600) && !(intrRate <= 0 || intrRate > 2000)) {
+            if (!((numbMnth + '').indexOf('.') >= 0)) {
+              this.paymentPlan.startDate = new Date(this.startDate)
+              this.paymentPlan = Calculator.calculate(this.paymentPlan)
+              this.pagination = {
+                page: 1,
+                limit: 12,
+                offset: 0
+              }
+            } else {
+              this.errorsCust.month.push('Нецелое количество месяцев')
+              // Тут ещё нужно удалить старый план оплат, чтоб при ошибке не было цифр внизу
             }
           } else {
-            this.errorsCust.month.push('Нецелое количество месяцев')
+            if (paymAmnt <= 0) this.errorsCust.sum.push('Отрицательная или нулевая сумма кредита')
+            if (paymAmnt > 999999999) this.errorsCust.sum.push('Слишком большое число суммы кредита')
+            if (numbMnth <= 0) this.errorsCust.month.push('Отрицательное или нулевое количество месяцев')
+            if (numbMnth > 600) this.errorsCust.month.push('Слишком большое число количества месяцев')
+            if (intrRate <= 0) this.errorsCust.rate.push('Отрицательный или нулевой процент в год')
+            if (intrRate > 2000) this.errorsCust.rate.push('Слишком большое число процента в год')
             // Тут ещё нужно удалить старый план оплат, чтоб при ошибке не было цифр внизу
           }
         } else {
-          if (paymAmnt <= 0) this.errorsCust.sum.push('Отрицательная или нулевая сумма кредита')
-          if (paymAmnt > 999999999) this.errorsCust.sum.push('Слишком большое число суммы кредита')
-          if (numbMnth <= 0) this.errorsCust.month.push('Отрицательное или нулевое количество месяцев')
-          if (numbMnth > 600) this.errorsCust.month.push('Слишком большое число количества месяцев')
-          if (intrRate <= 0) this.errorsCust.rate.push('Отрицательный или нулевой процент в год')
-          if (intrRate > 2000) this.errorsCust.rate.push('Слишком большое число процента в год')
+          if (!paymAmnt) this.errorsCust.sum.push('Требуется указать сумму кредита')
+          if (!numbMnth) this.errorsCust.month.push('Требуется указать количество месяцев')
+          if (!intrRate) this.errorsCust.rate.push('Требуется указать процент в год')
           // Тут ещё нужно удалить старый план оплат, чтоб при ошибке не было цифр внизу
         }
-      } else {
-        if (!paymAmnt) this.errorsCust.sum.push('Требуется указать сумму кредита')
-        if (!numbMnth) this.errorsCust.month.push('Требуется указать количество месяцев')
-        if (!intrRate) this.errorsCust.rate.push('Требуется указать процент в год')
-        // Тут ещё нужно удалить старый план оплат, чтоб при ошибке не было цифр внизу
+      }
+    },
+    computed: {
+      currentPayments: function () {
+        let start = (this.pagination.page - 1) * this.pagination.limit
+        let end = start + this.pagination.limit
+        return this.paymentPlan.paymentList.slice(start, end)
       }
     }
-  },
-  computed: {
-    currentPayments: function () {
-      let start = (this.pagination.page - 1) * this.pagination.limit
-      let end = start + this.pagination.limit
-      return this.paymentPlan.paymentList.slice(start, end)
-    }
   }
-}
 </script>
 
 <style scoped>

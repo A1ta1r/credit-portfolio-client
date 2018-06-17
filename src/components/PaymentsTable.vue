@@ -12,7 +12,7 @@
         <td>{{ (new Date(item.paymentDate)).toLocaleDateString("ru", options) }}</td>
         <td>
           <vue-numeric currency="₽" separator="space" v-bind:value="item.paymentAmount" :read-only="true"
-                       :precision="2"></vue-numeric>
+                       :precision="2" decimal-separator="."></vue-numeric>
         </td>
       </tr>
     </table>
