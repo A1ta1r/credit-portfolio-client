@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
 import Calculator from '@/components/Calculator'
 import Signup from '@/components/Signup'
 import Signin from '@/components/Signin'
@@ -13,9 +12,9 @@ export default new Router({
     {
       title: 'Кредитный портфель',
       path: '/',
-      name: 'HelloWorld',
-      meta: {title: 'Кредитный портфель'},
-      component: HelloWorld
+      name: 'User',
+      meta: {title: 'Личный кабинет', requiresAuth: true},
+      component: UserPage
     },
     {
       title: 'Регистрация',
@@ -35,7 +34,7 @@ export default new Router({
       title: 'Личный кабинет',
       path: '/user/profile',
       name: 'User',
-      meta: {title: 'Личный кабинет'},
+      meta: {title: 'Личный кабинет', requiresAuth: true},
       component: UserPage
     },
     {
@@ -49,7 +48,7 @@ export default new Router({
       title: 'Выход',
       path: '/signout',
       name: 'Signout',
-      meta: {title: 'Выход'}
+      meta: {title: 'Выход', requiresAuth: true}
     }
   ]
 })

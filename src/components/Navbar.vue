@@ -25,6 +25,8 @@
 
 <script>
 
+import {checkLoggedIn} from '../services/auth'
+
 export default {
   name: 'Navbar',
   data () {
@@ -35,7 +37,7 @@ export default {
       signup: '',
       signout: '',
       userpage: '',
-      isLoggedIn: this.checkLoggedIn()
+      isLoggedIn: checkLoggedIn()
     }
   },
   created: function () {
@@ -55,27 +57,21 @@ export default {
     this.userpage = routes[3]
     this.calculator = routes[4]
     this.signout = routes[5]
-    this.checkLoggedIn()
+    this.isLoggedIn = checkLoggedIn()
   },
   methods: {
     clearCredentials: function () {
       console.log('hello')
       localStorage.removeItem('username')
       localStorage.removeItem('token')
-    },
-    checkLoggedIn: function () {
-      console.log(localStorage.getItem('username') !== null && localStorage.getItem('token') !== null)
-      this.isLoggedIn = localStorage.getItem('username') !== null && localStorage.getItem('token') !== null
     }
   },
   watch: {
-    '$route' (to, from) {
-      this.checkLoggedIn()
-      console.log(to)
+    '$route' (to) {
+      this.isLoggedIn = checkLoggedIn()
       if (to.name === this.signout.name) {
-        console.log(to.name)
         this.clearCredentials()
-        this.$router.push('/')
+        this.$router.push('/signin')
       }
     }
   }

@@ -39,7 +39,8 @@ export default class User {
       headers: {
         Authorization: localStorage.getItem('token')
       }
-    }).then(() => {
+    }).then((response) => {
+      return response.status
     }).catch((error) => {
       console.log(error)
     })

@@ -8,6 +8,7 @@ import VeeValidate from 'vee-validate'
 import ru from 'vee-validate/dist/locale/ru'
 import axios from 'axios'
 import VueNumeric from 'vue-numeric'
+import {refreshToken} from './services/auth'
 
 VeeValidate.Validator.localize('ru', ru)
 
@@ -17,15 +18,26 @@ Vue.use(VueNumeric)
 Vue.config.productionTip = false
 
 router.beforeEach((to, from, next) => {
-  document.title = to.meta.title !== undefined ? to.meta.title : 'Кредитный портфель'
-  next()
+  if (to.meta.requiresAuth) {
+    refreshToken().then((isTokenValid) => {
+      if (isTokenValid) {
+        document.title = to.meta.title !== undefined ? to.meta.title : 'Кредитный портфель'
+        next()
+      } else {
+        router.push('/signin')
+      }
+    }).catch(() => {
+      router.push('/signin')
+    })
+  } else {
+    document.title = to.meta.title !== undefined ? to.meta.title : 'Кредитный портфель'
+    next()
+  }
 })
 
 export const HTTP = axios.create({
-  baseURL: 'https://protected-badlands-94104.herokuapp.com'
+  baseURL: 'https://protected-badlands-94104.herokuapp.com/'
 })
-
-console.log(Object.keys(HTTP.defaults.headers))
 
 /* eslint-disable no-new */
 new Vue({

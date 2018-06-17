@@ -7,17 +7,13 @@
 </template>
 
 <script>
-import HeaderCom from './components/Header'
 import FooterCom from './components/Footer'
-import SidebarCom from './components/Sidebar'
 import Navbar from './components/Navbar'
 export default {
   name: 'App',
   components: {
     Navbar,
-    HeaderCom,
-    FooterCom,
-    SidebarCom
+    FooterCom
   }
 }
 </script>
