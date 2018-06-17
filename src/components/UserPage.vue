@@ -7,8 +7,10 @@
           <table cellspacing="0" class="my-table">
             <tr>
               <td class="sumColumn" :class="{'has-danger':errors.first('incomeSum') != null}">
-                <input class="form-control" name="incomeSum" v-model="currentIncome.amount" data-vv-as="сумма"
-                       v-validate="{ required: true, decimal: true, min_value:1 }" placeholder="сумма" type="text"/>
+                <vue-numeric currency="₽" separator="space" class="form-control" v-model="currentIncome.amount"
+                             data-vv-as="сумма" placeholder="сумма"
+                             name="incomeSum" v-validate="{ min_value:0.01, required:true, decimal:true }"
+                             :precision="2" value=""></vue-numeric>
               </td>
               <td class="reasonColumn">
                 <input class="form-control" name="sourceIncome" v-model="currentIncome.reason"
@@ -25,8 +27,10 @@
           <table cellspacing="0" class="my-table">
             <tr>
               <td class="sumColumn" :class="{'has-danger':errors.first('expenseSum') != null}">
-                <input class="form-control" v-model="currentExpense.amount" data-vv-as="сумма" placeholder="сумма"
-                       name="expenseSum" v-validate="{ required:true, decimal:true, min_value:1 }" type="text"/>
+                <vue-numeric currency="₽" separator="space" class="form-control" v-model="currentExpense.amount"
+                             data-vv-as="сумма" placeholder="сумма"
+                             name="expenseSum" v-validate="{min_value:0.01, required:true, decimal:true  }"
+                             :precision="2" value=""></vue-numeric>
               </td>
               <td class="reasonColumn">
                 <input class="form-control" v-model="currentExpense.reason" placeholder="источник" type="text"/>
@@ -48,21 +52,34 @@
       <hr/>
       <div class="row">
         <div class="leftColumn">
-          <input readonly class="form-control" type="text" v-model="totalIncome"/>
+          <label class="form-control form-control-success">
+            Доходы:
+            <vue-numeric currency="₽" separator="space" v-bind:value="totalIncome" :read-only="true"
+                         :precision="2"></vue-numeric>
+          </label>
         </div>
         <div class="rightColumn">
-          <input readonly class="form-control" type="text" v-model="totalExpense"/>
-      </div>
+          <label class="form-control form-control-success">
+            Расходы:
+            <vue-numeric currency="₽" separator="space" v-bind:value="totalExpense" :read-only="true"
+                         :precision="2"></vue-numeric>
+          </label>
+
+        </div>
       </div>
       <hr/>
       <div class="row">
         <div class="leftColumn">
           <table class="myFavoriteTable table table-bordered">
-            <tr v-bind:key="item" v-for="item in user.incomes" class="form-control-static">
-              <td>₽{{ item.amount }}</td>
+            <tr v-bind:key="item.id" v-for="item in user.incomes" class="form-control-static">
+              <td>
+                <vue-numeric currency="₽" separator="space" v-bind:value="item.amount" :read-only="true"
+                             :precision="2"></vue-numeric>
+              </td>
               <td>{{ item.reason }}</td>
               <td class="deleteRow">
-                <input type="button" name="deleteIncome" class="btn btn-secondary btn-danger btn-sm" title="Удалить" value="—"
+                <input type="button" name="deleteIncome" class="btn btn-secondary btn-danger btn-sm" title="Удалить"
+                       value="—"
                        @click="deleteIncome(item, $event)"/>
               </td>
             </tr>
@@ -70,12 +87,16 @@
         </div>
         <td class="rightColumn">
           <table class="table table-bordered">
-            <tr v-bind:key="item" v-for="item in user.expenses" class="form-control-static">
-              <td>₽{{ item.amount }}</td>
+            <tr v-bind:key="item.id" v-for="item in user.expenses" class="form-control-static">
+              <td>
+                <vue-numeric currency="₽" separator="space" v-bind:value="item.amount" :read-only="true"
+                             :precision="2"></vue-numeric>
+              </td>
               <td>{{ item.reason }}</td>
               <td>До {{ (new Date(item.endDate)).toLocaleDateString("ru", options)}}</td>
               <td class="deleteRow">
-                <input type="button" class="btn btn-secondary btn-sm btn-danger" title="Удалить" value="—" name="deleteIncome"
+                <input type="button" class="btn btn-secondary btn-sm btn-danger" title="Удалить" value="—"
+                       name="deleteIncome"
                        @click="deleteExpense(item, $event)"/>
               </td>
             </tr>
@@ -222,7 +243,7 @@ export default {
   }
 
   .dateColumn {
-    width:180px;
+    width: 180px;
   }
 
 </style>

@@ -7,9 +7,12 @@ import 'bootstrap-css'
 import VeeValidate from 'vee-validate'
 import ru from 'vee-validate/dist/locale/ru'
 import axios from 'axios'
+import VueNumeric from 'vue-numeric'
 
 VeeValidate.Validator.localize('ru', ru)
+
 Vue.use(VeeValidate)
+Vue.use(VueNumeric)
 
 Vue.config.productionTip = false
 

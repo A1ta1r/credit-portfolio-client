@@ -10,7 +10,10 @@
       </thead>
       <tr v-bind:key="item.paymentDate" v-for="item in payments" class="form-control-static">
         <td>{{ (new Date(item.paymentDate)).toLocaleDateString("ru", options) }}</td>
-        <td>{{ item.paymentAmount.toFixed(2) }} RUB</td>
+        <td>
+          <vue-numeric currency="₽" separator="space" v-bind:value="item.paymentAmount" :read-only="true"
+                       :precision="2"></vue-numeric>
+        </td>
       </tr>
     </table>
   </div>
