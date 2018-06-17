@@ -1,39 +1,30 @@
-import {Model} from 'vue-mc'
-
-export default class PaymentPlan extends Model {
+export default class PaymentPlan {
   static LoanTypes = {'Even': 'Аннуитетный', 'Differentiated': 'Дифференцированный'}
 
-  defaults () {
-    return {
-      id: 0,
-      title: 'Новый кредит',
-      paymentType: PaymentPlan.LoanTypes.Even,
-      paymentAmount: 0,
-      interestRate: 0,
-      currency: 'RUB',
-      numberOfMonths: 0,
-      paymentList: [],
-      startDate: new Date(),
-      totalPaymentAmount: 0,
-      errorsCust: {
-        amount: [],
-        month: [],
-        rate: []
-      } // Добавил массив ошибок, как в примере
-    }
-  }
+  id
+  title
+  paymentType
+  paymentAmount
+  interestRate
+  currency
+  numberOfMonths
+  paymentList
+  startDate
+  totalPaymentAmount
+  errorsCust
 
-  routes () {
-    return {
-      fetch: 'http://localhost:8000/plan/{id}',
-      save: 'http://localhost:8000/plan'
-    }
-  }
-
-  options () {
-    return {
-      validateOnChange: true,
-      validateOnSave: true
+  constructor () {
+    this.title = 'Новый кредит'
+    this.paymentType = PaymentPlan.LoanTypes.Even
+    this.numberOfMonths = 0
+    this.interestRate = 0
+    this.totalPaymentAmount = 0
+    this.paymentList = []
+    this.startDate = new Date(Date.now())
+    this.errorsCust = {
+      amount: [],
+      month: [],
+      rate: []
     }
   }
 }

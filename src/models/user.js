@@ -16,6 +16,7 @@ export default class User {
     this.email = email
     this.incomes = []
     this.expenses = []
+    this.paymentPlans = []
   }
 
   fetch () {
@@ -29,6 +30,7 @@ export default class User {
       this.role = response.data.roleId
       this.incomes = response.data.incomes
       this.expenses = response.data.expenses
+      this.paymentPlans = response.data.paymentPlans
     }).catch((error) => {
       console.log(error)
     })
@@ -53,28 +55,6 @@ export default class User {
       }
     }).then(() => {
 
-    })
-  }
-
-  // Получает из API данные юзера по username из localStorage
-  // и кладет их в глобальное хранилище.
-  // Метод предназначен для получения текущего юзера.
-  static fetchLoggedIn () {
-    let username = localStorage.getItem('username')
-    if (username === undefined) {
-      return undefined
-    }
-    return HTTP.get('/user/username' + username, {
-      headers: {
-        Authorization: localStorage.getItem('token')
-      }
-    }).then((response) => {
-      localStorage.setItem('id', response.data.id)
-      localStorage.setItem('username', response.data.username)
-      localStorage.setItem('role', response.data.role)
-      localStorage.setItem('email', response.data.email)
-    }).catch((error) => {
-      console.log(error)
     })
   }
 }

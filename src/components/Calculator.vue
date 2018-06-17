@@ -1,6 +1,13 @@
 <template>
   <div id="calculator" class="flex-container">
 
+    <div style="margin-bottom: 0; margin-top: 10pt" class="form-group">
+      <label>Название кредита</label>
+      <input class="form-control" type="text" id="title" :min="1" v-model="paymentPlan.title"
+             placeholder="Введите название" title="Название кредита"/>
+    </div>
+    <span v-if="errorsCust.month.length" v-bind:key="error" v-for="error in errorsCust.month">{{error}}</span>
+
     <div style="margin-bottom: 0" class="form-group" v-bind:class="{ 'has-danger': errorsCust.sum.length }">
       <label>Сумма кредита, ₽</label>
       <vue-numeric currency="₽" separator="space" class="form-control" v-model="paymentPlan.paymentAmount"
@@ -58,9 +65,9 @@
 
     <div class="form-control-static">
       <input type="submit" class="btn btn-primary" title="Рассчитать" value="Рассчитать" v-on:click="calculation"/>
-    </div>
-    <div class="form-control-static" v-if="paymentPlan.totalPaymentAmount && checkLoggged" >
-      <input type="submit" class="btn btn-info" title="Добавить себе немного кредитов" value="Добавить себе немного кредитов"/>
+      <input type="submit" @click="addPlan" v-if="checkLogged" :class="{'btn-success':paymentPlan.totalPaymentAmount}"
+             :disabled="planToSave === {}" class="btn" title="Добавить себе немного кредитов"
+             value="Добавить себе немного кредитов"/>
     </div>
     <h5 v-if="paymentPlan.totalPaymentAmount" class="form-control-static">Итоговая сумма платежей:
       <vue-numeric currency="₽" separator="space" v-bind:value="paymentPlan.totalPaymentAmount" :read-only="true"
@@ -87,6 +94,7 @@ import Calculator from '../services/calculator'
 import Datepicker from 'vuejs-datepicker'
 import {ru} from 'vuejs-datepicker/dist/locale'
 import {checkLoggedIn} from '../services/auth'
+import User from '../models/user'
 
 export default {
   name: 'calculator',
@@ -95,7 +103,9 @@ export default {
     return {
       even: PaymentPlan.LoanTypes.Even,
       diff: PaymentPlan.LoanTypes.Differentiated,
+      user: {},
       paymentPlan: new PaymentPlan(),
+      planToSave: null,
       startDate: Date.now(),
       datepickerLocale: ru,
       datepickerInput: 'form-control',
@@ -113,6 +123,7 @@ export default {
     }
   },
   methods: {
+    checkLogged: () => checkLoggedIn(),
     calculation: function () {
       let paymAmnt = this.paymentPlan.paymentAmount
       let numbMnth = this.paymentPlan.numberOfMonths
@@ -125,6 +136,7 @@ export default {
           if (!((numbMnth + '').indexOf('.') >= 0)) {
             this.paymentPlan.startDate = new Date(this.startDate)
             this.paymentPlan = Calculator.calculate(this.paymentPlan)
+            this.planToSave = Object.assign(this.paymentPlan)
             this.pagination = {
               page: 1,
               limit: 12,
@@ -150,6 +162,13 @@ export default {
         if (!intrRate) this.errorsCust.rate.push('Требуется указать процент в год')
         // Тут ещё нужно удалить старый план оплат, чтоб при ошибке не было цифр внизу
       }
+    },
+    addPlan: function () {
+      if (this.user.paymentPlans == null) this.user.paymentPlans = []
+      this.user.paymentPlans.push(this.planToSave)
+      this.user.update()
+
+      this.planToSave = {}
     }
   },
   computed: {
@@ -157,9 +176,6 @@ export default {
       let start = (this.pagination.page - 1) * this.pagination.limit
       let end = start + this.pagination.limit
       return this.paymentPlan.paymentList.slice(start, end)
-    },
-    checkLoggged: function () {
-      return checkLoggedIn()
     },
     getPaymentsAmount: function () {
       if (this.paymentPlan.paymentList[0].paymentAmount === this.paymentPlan.paymentList[1].paymentAmount) {
@@ -171,6 +187,16 @@ export default {
         }
         return result
       }
+    }
+  },
+  created: function () {
+    if (checkLoggedIn()) {
+      let user = new User('', '', '')
+      user.username = localStorage.getItem('username')
+      user.fetch().then(() => {
+        this.user = user
+        console.log(this.user)
+      })
     }
   },
   mounted: function () {

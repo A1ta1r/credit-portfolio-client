@@ -25,11 +25,7 @@ export default class Calculator {
 
     for (let i = 0; i < paymentPlan.numberOfMonths; i++) {
       let currentMonth = date.setMonth(date.getMonth() + 1)
-      paymentPlan.paymentList[i] = new Payment({paymentDate: currentMonth, paymentAmount: sum})
-    }
-
-    for (let i = 0; i < paymentPlan.numberOfMonths; i++) {
-      paymentPlan.paymentList[i].paymentPlan = paymentPlan
+      paymentPlan.paymentList[i] = new Payment(currentMonth, sum)
     }
 
     return paymentPlan
@@ -46,13 +42,10 @@ export default class Calculator {
     for (let i = 0; i < paymentPlan.numberOfMonths; i++) {
       let currentMonth = date.setMonth(date.getMonth() + 1)
       let sum = baseFee + (paymentPlan.paymentAmount - baseFee * i) * paymentPlan.interestRate / 100 / 12
-      paymentPlan.paymentList[i] = new Payment({paymentDate: currentMonth, paymentAmount: sum})
+      paymentPlan.paymentList[i] = new Payment(currentMonth, sum)
       paymentPlan.totalPaymentAmount += sum
     }
 
-    for (let i = 0; i < paymentPlan.numberOfMonths; i++) {
-      paymentPlan.paymentList[i].paymentPlan = paymentPlan
-    }
     return paymentPlan
   }
 }

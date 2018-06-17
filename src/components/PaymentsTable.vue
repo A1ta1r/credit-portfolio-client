@@ -15,11 +15,11 @@
                        :precision="2" decimal-separator="."></vue-numeric>
         </td>
         <td v-if="myPaymentPlan">
-          <vue-numeric currency="₽" separator="space" v-bind:value="item.paymentPlan.totalPaymentAmount - countRest(index, page)" :read-only="true"
+          <vue-numeric currency="₽" separator="space" v-bind:value="total - countRest(index, page)" :read-only="true"
                        :precision="2" decimal-separator="."></vue-numeric>
         </td>
         <td v-if="!myPaymentPlan">
-          <vue-numeric currency="₽" separator="space" v-bind:value="item.paymentPlan.totalPaymentAmount - item.paymentAmount * (index + 1 + ((page - 1) * 12))" :read-only="true"
+          <vue-numeric currency="₽" separator="space" v-bind:value="total - item.paymentAmount * (index + 1 + ((page - 1) * 12))" :read-only="true"
                        :precision="2" decimal-separator="."></vue-numeric>
         </td>
       </tr>
@@ -43,7 +43,8 @@ export default {
   props: {
     payments: Array,
     page: Number,
-    myPaymentPlan: Array
+    myPaymentPlan: Array,
+    total: Number
   },
   methods: {
     countRest: function (currNumb, currPage) {
