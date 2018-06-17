@@ -59,8 +59,14 @@
     <div class="form-control-static">
       <input type="submit" class="btn btn-primary" title="Рассчитать" value="Рассчитать" v-on:click="calculation"/>
     </div>
-    <h5 v-if="paymentPlan.totalPaymentAmount" class="form-control-static">Итоговая сумма платежей:
+    <h5 v-if="paymentPlan.totalPaymentAmount">
+      Итоговая сумма платежей:
       <vue-numeric currency="₽" separator="space" v-bind:value="paymentPlan.totalPaymentAmount" :read-only="true"
+                   :precision="2" decimal-separator="."></vue-numeric>
+    </h5>
+    <h5 v-if="paymentPlan.totalPaymentAmount">
+      Переплата по кредиту:
+      <vue-numeric currency="₽" separator="space" v-bind:value="paymentDifference" :read-only="true"
                    :precision="2" decimal-separator="."></vue-numeric>
     </h5>
     <PaymentsTable v-if="paymentPlan.totalPaymentAmount" :payments="currentPayments" :page="this.pagination.page"
@@ -99,7 +105,8 @@ export default {
         page: 1,
         limit: 12,
         offset: 0
-      }
+      },
+      paymentDifference: 0
     }
   },
   methods: {
@@ -120,6 +127,7 @@ export default {
               limit: 12,
               offset: 0
             }
+            this.paymentDifference = this.paymentPlan.totalPaymentAmount - this.paymentPlan.paymentAmount
           } else {
             this.errorsCust.month.push('Нецелое количество месяцев')
             // Тут ещё нужно удалить старый план оплат, чтоб при ошибке не было цифр внизу
