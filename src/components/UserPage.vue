@@ -10,7 +10,7 @@
             <p>{{ selectedState }}</p>
             <toggle style="margin-bottom: -6px" v-model="currentIncome.isIncome"></toggle>
           </li>
-          <li  id="sum" class="" >
+          <li id="sum" class="">
             <vue-numeric currency="₽" separator="space" class="form-control flex-item" v-model="currentIncome.amount"
                          data-vv-as="сумма" placeholder="сумма"
                          name="incomeSum" v-validate="{ min_value:0.01, required:true, decimal:true }"
@@ -21,10 +21,10 @@
                    placeholder="источник" type="text"/>
           </li>
 
-          <li  id="frequency" class="" >
-            <vue-numeric  class="form-control flex-item smalInt" v-model="currentIncome.frequency"
-                          placeholder="Количество"
-                          name="frequency" v-validate="{ min_value: 0, required:true, numeric:true }"></vue-numeric>
+          <li id="frequency" class="">
+            <vue-numeric class="form-control flex-item smalInt" v-model="currentIncome.frequency"
+                         placeholder="Количество"
+                         name="frequency" v-validate="{ min_value: 0, required:true, numeric:true }"></vue-numeric>
           </li>
           <li id="period" class="">Периодичность
             <select class="form-control" v-model="currentIncome.paymentPeriod">
@@ -168,25 +168,30 @@ export default {
   },
   methods: {
     addBtnClick: function () {
-      this.currentIncome.amount = parseFloat(this.currentIncome.amount, 10)
-      if (this.user.incomes == null) this.user.incomes = []
-      if (this.user.expenses == null) this.user.expenses = []
+      this.$validator.validateAll().then((success) => {
+        if (success) {
+          this.currentIncome.amount = parseFloat(this.currentIncome.amount, 10)
+          this.currentIncome.frequency = parseInt(this.currentIncome.frequency, 10)
+          if (this.user.incomes == null) this.user.incomes = []
+          if (this.user.expenses == null) this.user.expenses = []
 
-      this.currentIncome.isRepeatable = this.currentIncome.paymentPeriod === 'Единовременный'
+          this.currentIncome.isRepeatable = this.currentIncome.paymentPeriod === 'Единовременный'
 
-      if (this.currentIncome.isIncome) this.user.incomes.push(this.currentIncome)
-      else this.user.expenses.push(this.currentIncome)
-      this.user.update()
+          if (this.currentIncome.isIncome) this.user.incomes.push(this.currentIncome)
+          else this.user.expenses.push(this.currentIncome)
+          this.user.update()
 
-      this.currentIncome = {
-        isIncome: this.isIncome,
-        amount: this.amount,
-        reason: this.reason,
-        paymentPeriod: this.paymentPeriod,
-        frequency: this.frequency,
-        startDate: new Date(Date.now()),
-        isRepeatable: this.isRepeatable
-      }
+          this.currentIncome = {
+            isIncome: this.currentIncome.isIncome,
+            amount: this.amount,
+            reason: this.reason,
+            paymentPeriod: this.paymentPeriod,
+            frequency: this.frequency,
+            startDate: new Date(Date.now()),
+            isRepeatable: this.isRepeatable
+          }
+        }
+      })
     },
     deleteIncome (incomeObj, event) {
       let index = this.user.incomes.indexOf(incomeObj)
@@ -219,6 +224,7 @@ export default {
     padding-left: 8px;
     padding-right: 8px;
   }
+
   .flex-container {
     padding: 1px;
     margin: 0px;

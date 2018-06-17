@@ -203,7 +203,7 @@ export default {
     })
   },
   mounted: function () {
-    this.paymentPlan.paymentAmount = 300000
+    this.paymentPlan.paymentAmount = 300001
     this.paymentPlan.interestRate = 12
     this.paymentPlan.numberOfMonths = 24
   }
