@@ -26,12 +26,12 @@
           <li id="frequency" class="">
             <p>Количество периодов</p>
             <vue-numeric class="form-control flex-item smalInt" v-model="currentIncome.frequency"
-                         placeholder="Количество"
-                         name="frequency" v-validate="{ numeric:true , max_value: 10000, min_value: 0, required:true }"></vue-numeric>
+                         placeholder="Количество" data-vv-as="количество"
+                         name="frequency" v-validate="{ numeric:true , max_value: 10000, min_value: 1, required:true }"></vue-numeric>
           </li>
           <li id="period" class="">
             <p>Период</p>
-            <select class="form-control" v-model="currentIncome.paymentPeriod">
+            <select class="form-control" data-vv-as="период" v-validate="{ required:true }" v-model="currentIncome.paymentPeriod">
               <option>Единовременный</option>
               <option>День</option>
               <option>Неделя</option>
@@ -50,7 +50,7 @@
             <input class="btn btn-success flex-item" v-on:click="addBtnClick" title="Добавить" value="+" type="submit"/>
           </li>
         </ul>
-        <span class="">{{ errors.first('incomeSum') }}</span>
+        <span class="">{{ errors.all()[0] }}</span>
       </div>
       <hr/>
       <!--сумма доходов и расходов-->
@@ -77,7 +77,7 @@
         <div class="leftColumn">
           <table class="myFavoriteTable table table-bordered">
             <thead>
-            <tr >
+            <tr class="text-center" >
               <th>Сумма</th>
               <th>Источник</th>
               <th>Периоды</th>
@@ -90,7 +90,7 @@
                              :precision="2" decimal-separator="."></vue-numeric>
               </td>
               <td>{{ item.reason }}</td>
-              <td>[{{ item.frequency}}] {{ item.paymentPeriod  }}</td>
+              <td><label v-if="item.isRepeatable === false" >[{{item.frequency}}]</label> {{ item.paymentPeriod  }}</td>
               <td>C {{ (new Date(item.startDate)).toLocaleDateString("ru", options)}}</td>
               <td class="deleteRow">
                 <input type="button" name="deleteIncome" style="margin: 0px" class="btn btn-secondary btn-danger btn-sm" title="Удалить"
@@ -116,7 +116,7 @@
                              :precision="2" decimal-separator="."></vue-numeric>
               </td>
               <td>{{ item.reason }}</td>
-              <td>[{{ item.frequency}}] {{ item.paymentPeriod  }}</td>
+              <td><label v-if="item.isRepeatable === false" >[{{item.frequency}}]</label> {{ item.paymentPeriod  }}</td>
               <td>C {{ (new Date(item.startDate)).toLocaleDateString("ru", options)}}</td>
               <td class="deleteRow">
                 <input type="button" class="btn btn-secondary btn-sm btn-danger" style="margin: 0px" title="Удалить" value="—"

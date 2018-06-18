@@ -5,6 +5,7 @@ import Signup from '@/components/Signup'
 import Signin from '@/components/Signin'
 import UserPage from '@/components/UserPage'
 import Agenda from '@/components/Agenda'
+import Loans from '@/components/Loans'
 
 Vue.use(Router)
 
@@ -51,6 +52,13 @@ export default new Router({
       name: 'Agenda',
       component: Agenda,
       meta: {title: 'События', requiresAuth: true}
+    },
+    {
+      title: 'Кредиты',
+      path: '/loans',
+      name: 'Loans',
+      meta: {title: 'Кредиты', requiresAuth: true},
+      component: Loans
     },
     {
       title: 'Выход',
