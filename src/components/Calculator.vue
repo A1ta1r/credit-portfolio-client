@@ -66,8 +66,8 @@
     <div class="form-control-static">
       <input type="submit" class="btn btn-primary" title="Рассчитать" value="Рассчитать" v-on:click="calculation"/>
       <input type="submit" @click="addPlan" v-if="logged" :class="{'btn-success':paymentPlan.totalPaymentAmount}"
-             :disabled="!paymentPlan.totalPaymentAmount" class="btn" title="Добавить себе немного кредитов"
-             value="Добавить себе немного кредитов"/>
+             :disabled="!paymentPlan.totalPaymentAmount" class="btn" title="Добавить кредит себе"
+             value="Добавить кредит себе"/>
     </div>
     <h5 v-if="paymentPlan.totalPaymentAmount" class="form-control-static">Итоговая сумма платежей:
       <vue-numeric currency="₽" separator="space" v-bind:value="paymentPlan.totalPaymentAmount" :read-only="true"

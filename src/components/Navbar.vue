@@ -20,6 +20,9 @@
         <router-link v-if="isLoggedIn" :to="agenda" class="nav-link" active-class="active">{{ agenda.title }}</router-link>
       </li>
       <li class="nav-item">
+        <router-link v-if="isLoggedIn" :to="credit" class="nav-link" active-class="active">{{ credit.title }}</router-link>
+      </li>
+      <li class="nav-item">
         <router-link :to="signout" v-if="isLoggedIn" class="nav-link">{{ signout.title }}</router-link>
       </li>
     </ul>
@@ -40,6 +43,7 @@ export default {
       signup: '',
       signout: '',
       userpage: '',
+      credit: '',
       agenda: '',
       isLoggedIn: checkLoggedIn()
     }
@@ -61,7 +65,8 @@ export default {
     this.userpage = routes[2]
     this.calculator = routes[3]
     this.agenda = routes[4]
-    this.signout = routes[5]
+    this.credit = routes[5]
+    this.signout = routes[6]
     this.isLoggedIn = checkLoggedIn()
   },
   watch: {
