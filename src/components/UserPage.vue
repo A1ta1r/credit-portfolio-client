@@ -77,7 +77,7 @@
         <div class="leftColumn">
           <table class="myFavoriteTable table table-bordered">
             <thead>
-            <tr >
+            <tr class="text-center" >
               <th>Сумма</th>
               <th>Источник</th>
               <th>Периоды</th>
