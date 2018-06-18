@@ -11,22 +11,26 @@
             <toggle style="margin-bottom: -6px" v-model="currentIncome.isIncome"></toggle>
           </li>
           <li id="sum" class="">
+            <p>Сумма</p>
             <vue-numeric currency="₽" separator="space" class="form-control flex-item" v-model="currentIncome.amount"
                          data-vv-as="сумма" placeholder="сумма"
                          name="incomeSum" v-validate="{ min_value:0.01, required:true, decimal:true }"
                          :precision="2" value="" decimal-separator="."></vue-numeric>
           </li>
           <li id="reason" class="">
+            <p>Источник</p>
             <input class="form-control flex-item" name="sourceIncome" v-model="currentIncome.reason"
                    placeholder="источник" type="text"/>
           </li>
 
           <li id="frequency" class="">
+            <p>Количество периодов</p>
             <vue-numeric class="form-control flex-item smalInt" v-model="currentIncome.frequency"
                          placeholder="Количество"
                          name="frequency" v-validate="{ min_value: 0, required:true, numeric:true }"></vue-numeric>
           </li>
-          <li id="period" class="">Периодичность
+          <li id="period" class="">
+            <p>Период</p>
             <select class="form-control" v-model="currentIncome.paymentPeriod">
               <option>Единовременный</option>
               <option>День</option>
@@ -37,6 +41,7 @@
             </select>
           </li>
           <li id="date" class="">
+            <p>Дата начала</p>
             <datepicker class="flex-item" :input-class="datepickerInput" :language="datepickerLocale"
                         v-model="currentIncome.startDate">
             </datepicker>
@@ -71,14 +76,24 @@
       <div class="row">
         <div class="leftColumn">
           <table class="myFavoriteTable table table-bordered">
+            <thead>
+            <tr >
+              <th>Сумма</th>
+              <th>Источник</th>
+              <th>Периоды</th>
+              <th>Дата начала</th>
+            </tr>
+            </thead>
             <tr v-bind:key="item.id" v-for="item in user.incomes" class="form-control-static">
               <td>
                 <vue-numeric currency="₽" separator="space" v-bind:value="item.amount" :read-only="true"
                              :precision="2" decimal-separator="."></vue-numeric>
               </td>
               <td>{{ item.reason }}</td>
+              <td>{{ item.paymentPeriod  }} [{{ item.frequency}}]</td>
+              <td>C {{ (new Date(item.startDate)).toLocaleDateString("ru", options)}}</td>
               <td class="deleteRow">
-                <input type="button" name="deleteIncome" class="btn btn-secondary btn-danger btn-sm" title="Удалить"
+                <input type="button" name="deleteIncome" style="margin: 0px" class="btn btn-secondary btn-danger btn-sm" title="Удалить"
                        value="—"
                        @click="deleteIncome(item, $event)"/>
               </td>
@@ -87,15 +102,24 @@
         </div>
         <td class="rightColumn">
           <table class="table table-bordered">
+            <thead>
+            <tr >
+              <th>Сумма</th>
+              <th>Источник</th>
+              <th>Периоды</th>
+              <th>Дата начала</th>
+            </tr>
+            </thead>
             <tr v-bind:key="item.id" v-for="item in user.expenses" class="form-control-static">
               <td>
                 <vue-numeric currency="₽" separator="space" v-bind:value="item.amount" :read-only="true"
                              :precision="2" decimal-separator="."></vue-numeric>
               </td>
               <td>{{ item.reason }}</td>
-              <td>До {{ (new Date(item.startDate)).toLocaleDateString("ru", options)}}</td>
+              <td>{{ item.paymentPeriod  }} [{{ item.frequency}}]</td>
+              <td>C {{ (new Date(item.startDate)).toLocaleDateString("ru", options)}}</td>
               <td class="deleteRow">
-                <input type="button" class="btn btn-secondary btn-sm btn-danger" title="Удалить" value="—"
+                <input type="button" class="btn btn-secondary btn-sm btn-danger" style="margin: 0px" title="Удалить" value="—"
                        name="deleteIncome"
                        @click="deleteExpense(item, $event)"/>
               </td>
@@ -241,8 +265,18 @@ export default {
     align-items: flex-end;
   }
 
+  th {
+    text-align: center;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
   .smalInt {
-    width: 50px;
+    width: auto;
+    max-width: 120px;
+    min-width: 40px;
   }
 
   .collumnTable {
