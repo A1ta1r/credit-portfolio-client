@@ -14,7 +14,7 @@
             <p>Сумма</p>
             <vue-numeric currency="₽" separator="space" class="form-control flex-item" v-model="currentIncome.amount"
                          data-vv-as="сумма" placeholder="сумма"
-                         name="incomeSum" v-validate="{ min_value:0.01, required:true, decimal:true }"
+                         name="incomeSum" v-validate="{ min_value:0.01, max_value:999999999999, required:true, decimal:true }"
                          :precision="2" value="" decimal-separator="."></vue-numeric>
           </li>
           <li id="reason" class="">
@@ -27,7 +27,7 @@
             <p>Количество периодов</p>
             <vue-numeric class="form-control flex-item smalInt" v-model="currentIncome.frequency"
                          placeholder="Количество"
-                         name="frequency" v-validate="{ min_value: 0, required:true, numeric:true }"></vue-numeric>
+                         name="frequency" v-validate="{ numeric:true , max_value: 10000, min_value: 0, required:true }"></vue-numeric>
           </li>
           <li id="period" class="">
             <p>Период</p>
@@ -90,7 +90,7 @@
                              :precision="2" decimal-separator="."></vue-numeric>
               </td>
               <td>{{ item.reason }}</td>
-              <td>{{ item.paymentPeriod  }} [{{ item.frequency}}]</td>
+              <td>[{{ item.frequency}}] {{ item.paymentPeriod  }}</td>
               <td>C {{ (new Date(item.startDate)).toLocaleDateString("ru", options)}}</td>
               <td class="deleteRow">
                 <input type="button" name="deleteIncome" style="margin: 0px" class="btn btn-secondary btn-danger btn-sm" title="Удалить"
@@ -116,7 +116,7 @@
                              :precision="2" decimal-separator="."></vue-numeric>
               </td>
               <td>{{ item.reason }}</td>
-              <td>{{ item.paymentPeriod  }} [{{ item.frequency}}]</td>
+              <td>[{{ item.frequency}}] {{ item.paymentPeriod  }}</td>
               <td>C {{ (new Date(item.startDate)).toLocaleDateString("ru", options)}}</td>
               <td class="deleteRow">
                 <input type="button" class="btn btn-secondary btn-sm btn-danger" style="margin: 0px" title="Удалить" value="—"
